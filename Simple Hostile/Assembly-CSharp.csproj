@@ -67,25 +67,25 @@
     <Compile Include="Assets\Scripts\ScriptableObjectGens\Gun.cs" />
     <Compile Include="Assets\Scripts\Weapon.cs" />
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>D:/WeltonKing/Projects/1. Games/Simple Hostile/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>D:/WeltonKing/Projects/1. Games/Simple Hostile/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>D:/WeltonKing/Projects/1. Games/Simple Hostile/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>D:/WeltonKing/Projects/1. Games/Simple Hostile/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>D:/WeltonKing/Projects/1. Games/Simple Hostile/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>D:/WeltonKing/Projects/1. Games/Simple Hostile/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
-      <HintPath>D:/WeltonKing/Projects/1. Games/Simple Hostile/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
+      <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>D:/System/ProgramFiles/Unity/2019.1.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -271,13 +271,13 @@
       <HintPath>D:/System/ProgramFiles/Unity/2019.1.0f2/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
-      <HintPath>D:/WeltonKing/Projects/1. Games/Simple Hostile/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Editor.dll</HintPath>
+      <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>D:/WeltonKing/Projects/1. Games/Simple Hostile/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.StandardEvents.dll</HintPath>
+      <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
-      <HintPath>D:/WeltonKing/Projects/1. Games/Simple Hostile/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Tracker.dll</HintPath>
+      <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>D:/System/ProgramFiles/Unity/2019.1.0f2/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
