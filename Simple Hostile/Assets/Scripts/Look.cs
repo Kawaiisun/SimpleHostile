@@ -6,6 +6,8 @@ namespace Com.Kawaiisun.SimpleHostile
 {
     public class Look : MonoBehaviour
     {
+        #region Variables
+
         public static bool cursorLocked = true;
 
         public Transform player;
@@ -17,6 +19,10 @@ namespace Com.Kawaiisun.SimpleHostile
         public float maxAngle;
 
         private Quaternion camCenter;
+
+        #endregion
+
+        #region Monobehaviour Callbacks
 
         void Start()
         {
@@ -31,7 +37,11 @@ namespace Com.Kawaiisun.SimpleHostile
             UpdateCursorLock();
         }
 
-        void SetY ()
+        #endregion
+
+        #region Private Methods
+
+        void SetY()
         {
             float t_input = Input.GetAxis("Mouse Y") * ySensitivity * Time.deltaTime;
             Quaternion t_adj = Quaternion.AngleAxis(t_input, -Vector3.right);
@@ -55,12 +65,12 @@ namespace Com.Kawaiisun.SimpleHostile
 
         void UpdateCursorLock()
         {
-            if(cursorLocked)
+            if (cursorLocked)
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
 
-                if(Input.GetKeyDown(KeyCode.Escape))
+                if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     cursorLocked = false;
                 }
@@ -76,5 +86,7 @@ namespace Com.Kawaiisun.SimpleHostile
                 }
             }
         }
+
+        #endregion
     }
 }

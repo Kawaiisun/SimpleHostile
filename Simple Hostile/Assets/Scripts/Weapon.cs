@@ -6,20 +6,25 @@ namespace Com.Kawaiisun.SimpleHostile
 {
     public class Weapon : MonoBehaviour
     {
+        #region Variables
+
         public Gun[] loadout;
         public Transform weaponParent;
 
         private GameObject currentWeapon;
 
-        void Start()
-        {
+        #endregion
 
-        }
+        #region MonoBehaviour Callbacks
 
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.Alpha1)) Equip(0);
         }
+
+        #endregion
+
+        #region Private Methods
 
         void Equip(int p_ind)
         {
@@ -31,5 +36,7 @@ namespace Com.Kawaiisun.SimpleHostile
 
             currentWeapon = t_newWeapon;
         }
+
+        #endregion
     }
 }
