@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\Look.cs" />
     <Compile Include="Assets\Scripts\Motion.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjectGens\Gun.cs" />
+    <Compile Include="Assets\Scripts\Sway.cs" />
     <Compile Include="Assets\Scripts\Weapon.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
