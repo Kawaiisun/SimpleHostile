@@ -10,8 +10,8 @@ namespace Com.Kawaiisun.SimpleHostile
 
         public Gun[] loadout;
         public Transform weaponParent;
-        public GameObject bulletholePrefab;
         public LayerMask canBeShot;
+        public GameObject bullethole;
 
         private int currentIndex;
         private GameObject currentWeapon;
@@ -72,14 +72,14 @@ namespace Com.Kawaiisun.SimpleHostile
 
         void Shoot ()
         {
-            Transform t_spawn = transform.Find("Cameras/Normal Camera");
+            Transform t_camera = transform.Find("Cameras/Normal Camera");
 
             RaycastHit t_hit = new RaycastHit();
-            if(Physics.Raycast(t_spawn.position, t_spawn.forward, out t_hit, 1000f, canBeShot))
+            if(Physics.Raycast(t_camera.transform.position, t_camera.transform.forward, out t_hit, 1000f, canBeShot))
             {
-                GameObject t_newHole = Instantiate(bulletholePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject;
-                t_newHole.transform.LookAt(t_hit.point + t_hit.normal);
-                Destroy(t_newHole, 5f);
+                GameObject t_newbullethole = Instantiate(bullethole, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity);
+                t_newbullethole.transform.LookAt(t_hit.point + t_hit.normal);
+                Destroy(t_newbullethole, 5f);
             }
         }
 
