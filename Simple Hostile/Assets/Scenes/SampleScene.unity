@@ -475,7 +475,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 129987646}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Ground Detect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2870,7 +2870,7 @@ GameObject:
   - component: {fileID: 609324856}
   - component: {fileID: 609324855}
   - component: {fileID: 609324857}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Normal Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3073,7 +3073,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 648516744}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4035,7 +4035,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 896423353}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cameras
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5058,7 +5058,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1189135693}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Misc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6591,7 +6591,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1791904352}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Design
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6855,7 +6855,7 @@ GameObject:
   - component: {fileID: 1833880500}
   - component: {fileID: 1833880502}
   - component: {fileID: 1833880501}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7014,7 +7014,7 @@ GameObject:
   - component: {fileID: 1851283962}
   - component: {fileID: 1851283963}
   - component: {fileID: 1851283964}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7130,6 +7130,7 @@ MonoBehaviour:
   sprintModifier: 2
   jumpForce: 1000
   normalCam: {fileID: 609324856}
+  weaponParent: {fileID: 648516744}
   groundDetector: {fileID: 129987646}
   ground:
     serializedVersion: 2
@@ -7167,6 +7168,11 @@ MonoBehaviour:
   loadout:
   - {fileID: 11400000, guid: 5a294cca40bb63e49a0237c4aa1fab6f, type: 2}
   weaponParent: {fileID: 648516744}
+  canBeShot:
+    serializedVersion: 2
+    m_Bits: 311
+  bullethole: {fileID: 3651482057017671146, guid: 34cd6bf59c4e4ec45b4a35aeaf57ecdc,
+    type: 3}
 --- !u!1 &1856725126
 GameObject:
   m_ObjectHideFlags: 0
