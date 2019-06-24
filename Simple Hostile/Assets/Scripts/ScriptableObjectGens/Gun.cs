@@ -9,6 +9,9 @@ namespace Com.Kawaiisun.SimpleHostile
     {
         public string name;
         public float firerate;
+        public float bloom;
+        public float recoil;
+        public float kickback;
         public float aimSpeed;
         public GameObject prefab;
     }
