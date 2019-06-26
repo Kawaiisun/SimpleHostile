@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 namespace Com.Kawaiisun.SimpleHostile
 {
-    public class Look : MonoBehaviour
+    public class Look : MonoBehaviourPunCallbacks
     {
         #region Variables
 
@@ -31,6 +32,8 @@ namespace Com.Kawaiisun.SimpleHostile
 
         void Update()
         {
+            if (!photonView.IsMine) return;
+
             SetY();
             SetX();
 
