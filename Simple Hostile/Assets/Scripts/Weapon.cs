@@ -26,7 +26,7 @@ namespace Com.Kawaiisun.SimpleHostile
         {
             if (!photonView.IsMine) return;
 
-            if (Input.GetKeyDown(KeyCode.Alpha1)) Equip(0);
+            if (Input.GetKeyDown(KeyCode.Alpha1)) { photonView.RPC("Equip", RpcTarget.All, 0); }
 
             if (currentWeapon != null)
             {
@@ -34,7 +34,7 @@ namespace Com.Kawaiisun.SimpleHostile
 
                 if(Input.GetMouseButtonDown(0) && currentCooldown <= 0)
                 {
-                    Shoot();
+                    photonView.RPC("Shoot", RpcTarget.All);
                 }
 
                 //weapon position elasticity
@@ -49,6 +49,7 @@ namespace Com.Kawaiisun.SimpleHostile
 
         #region Private Methods
 
+        [PunRPC]
         void Equip(int p_ind)
         {
             if (currentWeapon != null) Destroy(currentWeapon);
@@ -81,6 +82,7 @@ namespace Com.Kawaiisun.SimpleHostile
             }
         }
 
+        [PunRPC]
         void Shoot ()
         {
             Transform t_spawn = transform.Find("Cameras/Normal Camera");
@@ -92,21 +94,30 @@ namespace Com.Kawaiisun.SimpleHostile
             t_bloom -= t_spawn.position;
             t_bloom.Normalize();
 
+            //cooldown
+            currentCooldown = loadout[currentIndex].firerate;
+            
             //raycast
             RaycastHit t_hit = new RaycastHit();
-            if(Physics.Raycast(t_spawn.position, t_bloom, out t_hit, 1000f, canBeShot))
+            if (Physics.Raycast(t_spawn.position, t_bloom, out t_hit, 1000f, canBeShot))
             {
                 GameObject t_newHole = Instantiate(bulletholePrefab, t_hit.point + t_hit.normal * 0.001f, Quaternion.identity) as GameObject;
                 t_newHole.transform.LookAt(t_hit.point + t_hit.normal);
                 Destroy(t_newHole, 5f);
+
+                if(photonView.IsMine)
+                {
+                    //shooting other player on network
+                    if(t_hit.collider.gameObject.layer == 11)
+                    {
+                        //RPC Call to Damage Player Goes Here
+                    }
+                }
             }
 
             //gun fx
             currentWeapon.transform.Rotate(-loadout[currentIndex].recoil, 0, 0);
             currentWeapon.transform.position -= currentWeapon.transform.forward * loadout[currentIndex].kickback;
-
-            //cooldown
-            currentCooldown = loadout[currentIndex].firerate;
         }
 
         #endregion

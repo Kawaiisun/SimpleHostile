@@ -37,6 +37,7 @@ namespace Com.Kawaiisun.SimpleHostile
         private void Start()
         {
             cameraParent.SetActive(photonView.IsMine);
+            if(!photonView.IsMine) gameObject.layer = 11;
 
             baseFOV = normalCam.fieldOfView;
 
