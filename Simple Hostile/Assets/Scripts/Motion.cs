@@ -33,12 +33,15 @@ namespace Com.Kawaiisun.SimpleHostile
 
         private int current_health;
 
+        private Manager manager;
+
         #endregion
 
         #region MonoBehaviour Callbacks
 
         private void Start()
         {
+            manager = GameObject.Find("Manager").GetComponent<Manager>();
             current_health = max_health;
 
             cameraParent.SetActive(photonView.IsMine);
@@ -77,6 +80,8 @@ namespace Com.Kawaiisun.SimpleHostile
             {
                 rig.AddForce(Vector3.up * jumpForce);
             }
+
+            if (Input.GetKeyDown(KeyCode.U)) TakeDamage(500);
 
 
             //Head Bob
@@ -159,7 +164,8 @@ namespace Com.Kawaiisun.SimpleHostile
 
                 if(current_health <= 0)
                 {
-                    Debug.Log("YOU DIED");
+                    manager.Spawn();
+                    PhotonNetwork.Destroy(gameObject);
                 }
             }
         }
