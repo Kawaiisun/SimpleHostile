@@ -59,7 +59,7 @@ namespace Com.Kawaiisun.SimpleHostile
             GameObject t_newWeapon = Instantiate(loadout[p_ind].prefab, weaponParent.position, weaponParent.rotation, weaponParent) as GameObject;
             t_newWeapon.transform.localPosition = Vector3.zero;
             t_newWeapon.transform.localEulerAngles = Vector3.zero;
-            t_newWeapon.GetComponent<Sway>().enabled = photonView.IsMine;
+            t_newWeapon.GetComponent<Sway>().isMine = photonView.IsMine;
 
             currentWeapon = t_newWeapon;
         }
@@ -110,7 +110,7 @@ namespace Com.Kawaiisun.SimpleHostile
                     //shooting other player on network
                     if(t_hit.collider.gameObject.layer == 11)
                     {
-                        //RPC Call to Damage Player Goes Here
+                        t_hit.collider.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, loadout[currentIndex].damage);
                     }
                 }
             }
@@ -118,6 +118,12 @@ namespace Com.Kawaiisun.SimpleHostile
             //gun fx
             currentWeapon.transform.Rotate(-loadout[currentIndex].recoil, 0, 0);
             currentWeapon.transform.position -= currentWeapon.transform.forward * loadout[currentIndex].kickback;
+        }
+
+        [PunRPC]
+        private void TakeDamage (int p_damage)
+        {
+            GetComponent<Motion>().TakeDamage(p_damage);
         }
 
         #endregion

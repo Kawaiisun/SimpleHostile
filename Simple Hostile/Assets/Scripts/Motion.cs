@@ -13,6 +13,7 @@ namespace Com.Kawaiisun.SimpleHostile
         public float speed;
         public float sprintModifier;
         public float jumpForce;
+        public int max_health;
         public Camera normalCam;
         public GameObject cameraParent;
         public Transform weaponParent;
@@ -30,12 +31,16 @@ namespace Com.Kawaiisun.SimpleHostile
         private float baseFOV;
         private float sprintFOVModifier = 1.5f;
 
+        private int current_health;
+
         #endregion
 
         #region MonoBehaviour Callbacks
 
         private void Start()
         {
+            current_health = max_health;
+
             cameraParent.SetActive(photonView.IsMine);
             if(!photonView.IsMine) gameObject.layer = 11;
 
@@ -139,6 +144,24 @@ namespace Com.Kawaiisun.SimpleHostile
         void HeadBob (float p_z, float p_x_intensity, float p_y_intensity)
         {
             targetWeaponBobPosition = weaponParentOrigin + new Vector3(Mathf.Cos(p_z) * p_x_intensity, Mathf.Sin(p_z * 2) * p_y_intensity, 0);
+        }
+
+        #endregion
+
+        #region Public Methods
+        
+        public void TakeDamage (int p_damage)
+        {
+            if (photonView.IsMine)
+            {
+                current_health -= p_damage;
+                Debug.Log(current_health);
+
+                if(current_health <= 0)
+                {
+                    Debug.Log("YOU DIED");
+                }
+            }
         }
 
         #endregion
