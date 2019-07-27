@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 using Photon.Pun;
 
@@ -13,35 +14,60 @@ namespace Com.Kawaiisun.SimpleHostile
         public Transform weaponParent;
         public GameObject bulletholePrefab;
         public LayerMask canBeShot;
+        public bool isAiming = false;
 
         private float currentCooldown;
         private int currentIndex;
         private GameObject currentWeapon;
 
+        private bool isReloading;
+
         #endregion
 
         #region MonoBehaviour Callbacks
 
+        private void Start()
+        {
+            foreach (Gun a in loadout) a.Initialize();
+            Equip(0);
+        }
+
         void Update()
         {
-            if (!photonView.IsMine) return;
-
-            if (Input.GetKeyDown(KeyCode.Alpha1)) { photonView.RPC("Equip", RpcTarget.All, 0); }
+            if (photonView.IsMine && Input.GetKeyDown(KeyCode.Alpha1)) { photonView.RPC("Equip", RpcTarget.All, 0); }
+            if (photonView.IsMine && Input.GetKeyDown(KeyCode.Alpha2)) { photonView.RPC("Equip", RpcTarget.All, 1); }
 
             if (currentWeapon != null)
             {
-                Aim(Input.GetMouseButton(1));
-
-                if(Input.GetMouseButtonDown(0) && currentCooldown <= 0)
+                if (photonView.IsMine)
                 {
-                    photonView.RPC("Shoot", RpcTarget.All);
+                    Aim(Input.GetMouseButton(1));
+
+                    if (loadout[currentIndex].burst != 1)
+                    {
+                        if (Input.GetMouseButtonDown(0) && currentCooldown <= 0)
+                        {
+                            if (loadout[currentIndex].FireBullet()) photonView.RPC("Shoot", RpcTarget.All);
+                            else StartCoroutine(Reload(loadout[currentIndex].reload));
+                        }
+                    }
+                    else
+                    {
+                        if (Input.GetMouseButton(0) && currentCooldown <= 0)
+                        {
+                            if (loadout[currentIndex].FireBullet()) photonView.RPC("Shoot", RpcTarget.All);
+                            else StartCoroutine(Reload(loadout[currentIndex].reload));
+                        }
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.R)) StartCoroutine(Reload(loadout[currentIndex].reload));
+
+                    //cooldown
+                    if (currentCooldown > 0) currentCooldown -= Time.deltaTime;
                 }
 
                 //weapon position elasticity
                 currentWeapon.transform.localPosition = Vector3.Lerp(currentWeapon.transform.localPosition, Vector3.zero, Time.deltaTime * 4f);
-
-                //cooldown
-                if (currentCooldown > 0) currentCooldown -= Time.deltaTime;
             }
         }
 
@@ -49,10 +75,26 @@ namespace Com.Kawaiisun.SimpleHostile
 
         #region Private Methods
 
+        IEnumerator Reload (float p_wait)
+        {
+            isReloading = true;
+            currentWeapon.SetActive(false);
+
+            yield return new WaitForSeconds(p_wait);
+
+            loadout[currentIndex].Reload();
+            currentWeapon.SetActive(true);
+            isReloading = false;
+        }
+
         [PunRPC]
         void Equip(int p_ind)
         {
-            if (currentWeapon != null) Destroy(currentWeapon);
+            if (currentWeapon != null)
+            {
+                if(isReloading) StopCoroutine("Reload");
+                Destroy(currentWeapon);
+            }
 
             currentIndex = p_ind;
 
@@ -66,6 +108,7 @@ namespace Com.Kawaiisun.SimpleHostile
 
         void Aim (bool p_isAiming)
         {
+            isAiming = p_isAiming;
             Transform t_anchor = currentWeapon.transform.Find("Anchor");
             Transform t_state_ads = currentWeapon.transform.Find("States/ADS");
             Transform t_state_hip = currentWeapon.transform.Find("States/Hip");
@@ -123,7 +166,19 @@ namespace Com.Kawaiisun.SimpleHostile
         [PunRPC]
         private void TakeDamage (int p_damage)
         {
-            GetComponent<Motion>().TakeDamage(p_damage);
+            GetComponent<Player>().TakeDamage(p_damage);
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        public void RefreshAmmo (Text p_text)
+        {
+            int t_clip = loadout[currentIndex].GetClip();
+            int t_stache = loadout[currentIndex].GetStash();
+
+            p_text.text = t_clip.ToString("D2") + " / " + t_stache.ToString("D2");
         }
 
         #endregion

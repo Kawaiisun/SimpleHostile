@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f7184dad034aa248b65cbfec11b639b, type: 3}
-  m_Name: Pistol
+  m_Name: Machine Gun
   m_EditorClassIdentifier: 
-  name: Pistol
+  name: Machine Gun
   damage: 100
-  ammo: 20
-  clipsize: 8
-  firerate: 0.15
+  ammo: 150
+  burst: 1
+  clipsize: 32
+  firerate: 0.1
   bloom: 20
-  recoil: 7
-  kickback: 0.15
+  recoil: 4
+  kickback: 0.05
   aimSpeed: 7
-  reload: 1.5
-  prefab: {fileID: 1997507513380148126, guid: a41feda72f8ebfd41a56bf0117b7e447, type: 3}
+  reload: 2.5
+  prefab: {fileID: 1997507513380148126, guid: a74661b42f4f4bb4ca1218cdf36e1550, type: 3}
