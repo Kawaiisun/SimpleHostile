@@ -13,6 +13,7 @@ namespace Com.Kawaiisun.SimpleHostile
 
         public float speed;
         public float sprintModifier;
+        public float crouchModifier; //!
         public float slideModifier;
         public float jumpForce;
         public float lengthOfSlide;
@@ -22,6 +23,11 @@ namespace Com.Kawaiisun.SimpleHostile
         public Transform weaponParent;
         public Transform groundDetector;
         public LayerMask ground;
+
+        public float slideAmount; //!
+        public float crouchAmount; //!
+        public GameObject standingCollider; //!
+        public GameObject crouchingCollider; //!
 
         private Transform ui_healthbar;
         private Text ui_ammo;
@@ -43,6 +49,8 @@ namespace Com.Kawaiisun.SimpleHostile
 
         private Manager manager;
         private Weapon weapon;
+
+        private bool crouched; //!
 
         private bool sliding;
         private float slide_time;
@@ -92,43 +100,64 @@ namespace Com.Kawaiisun.SimpleHostile
             //Controls
             bool sprint = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
             bool jump = Input.GetKeyDown(KeyCode.Space);
+            bool crouch = Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl); //!
 
 
             //States
-            bool isGrounded = Physics.Raycast(groundDetector.position, Vector3.down, 0.1f, ground);
+            bool isGrounded = Physics.Raycast(groundDetector.position, Vector3.down, 0.15f, ground); //!
             bool isJumping = jump && isGrounded;
             bool isSprinting = sprint && t_vmove > 0 && !isJumping && isGrounded;
+            bool isCrouching = crouch && !isSprinting && !isJumping && isGrounded; //!
+
+
+            //Crouching //!
+            if (isCrouching)
+            {
+                photonView.RPC("SetCrouch", RpcTarget.All, !crouched);
+            }
 
 
             //Jumping
             if (isJumping)
             {
+                if(crouched) photonView.RPC("SetCrouch", RpcTarget.All, false); //!
                 rig.AddForce(Vector3.up * jumpForce);
             }
 
             if (Input.GetKeyDown(KeyCode.U)) TakeDamage(100);
 
 
-            //Head Bob
+            //Head Bob //!
             if (sliding)
             {
+                //sliding
                 HeadBob(movementCounter, 0.15f, 0.075f);
                 weaponParent.localPosition = Vector3.Lerp(weaponParent.localPosition, targetWeaponBobPosition, Time.deltaTime * 10f);
             }
             else if (t_hmove == 0 && t_vmove == 0)
             {
-                HeadBob(idleCounter, 0.025f, 0.025f);
+                //idling
+                HeadBob(idleCounter, 0.01f, 0.01f);
                 idleCounter += Time.deltaTime;
                 weaponParent.localPosition = Vector3.Lerp(weaponParent.localPosition, targetWeaponBobPosition, Time.deltaTime * 2f);
             }
-            else if (!isSprinting)
+            else if (!isSprinting && !crouched)
             {
+                //walking
                 HeadBob(movementCounter, 0.035f, 0.035f);
                 movementCounter += Time.deltaTime * 3f;
                 weaponParent.localPosition = Vector3.Lerp(weaponParent.localPosition, targetWeaponBobPosition, Time.deltaTime * 6f);
             }
+            else if(crouched)
+            {
+                //crouching
+                HeadBob(movementCounter, 0.02f, 0.02f);
+                movementCounter += Time.deltaTime * 1.75f;
+                weaponParent.localPosition = Vector3.Lerp(weaponParent.localPosition, targetWeaponBobPosition, Time.deltaTime * 6f);
+            }
             else
             {
+                //sprinting
                 HeadBob(movementCounter, 0.15f, 0.075f);
                 movementCounter += Time.deltaTime * 7f;
                 weaponParent.localPosition = Vector3.Lerp(weaponParent.localPosition, targetWeaponBobPosition, Time.deltaTime * 10f);
@@ -171,7 +200,15 @@ namespace Com.Kawaiisun.SimpleHostile
                 t_direction.Normalize();
                 t_direction = transform.TransformDirection(t_direction);
 
-                if (isSprinting) t_adjustedSpeed *= sprintModifier;
+                if (isSprinting)
+                {
+                    if (crouched) photonView.RPC("SetCrouch", RpcTarget.All, false); //!
+                    t_adjustedSpeed *= sprintModifier;
+                }
+                else if (crouched)
+                {
+                    t_adjustedSpeed *= crouchModifier; //!
+                }
             }
             else
             {
@@ -181,7 +218,7 @@ namespace Com.Kawaiisun.SimpleHostile
                 if(slide_time <= 0)
                 {
                     sliding = false;
-                    weaponParentCurrentPos = weaponParentOrigin;
+                    weaponParentCurrentPos -= Vector3.down * (slideAmount - crouchAmount); //
                 }
             }
 
@@ -196,21 +233,23 @@ namespace Com.Kawaiisun.SimpleHostile
                 sliding = true;
                 slide_dir = t_direction;
                 slide_time = lengthOfSlide;
-                weaponParentCurrentPos += Vector3.down * 0.75f;
+                weaponParentCurrentPos += Vector3.down * (slideAmount - crouchAmount); //!
+                if (!crouched) photonView.RPC("SetCrouch", RpcTarget.All, true); //!
             }
 
             //Camera Stuff
             if (sliding)
             {
                 normalCam.fieldOfView = Mathf.Lerp(normalCam.fieldOfView, baseFOV * sprintFOVModifier * 1.15f, Time.deltaTime * 8f);
-                normalCam.transform.localPosition = Vector3.Lerp(normalCam.transform.localPosition, origin + Vector3.down * 0.75f, Time.deltaTime * 6f);
+                normalCam.transform.localPosition = Vector3.Lerp(normalCam.transform.localPosition, origin + Vector3.down * slideAmount, Time.deltaTime * 6f); //!
             }
             else
             {
                 if (isSprinting) { normalCam.fieldOfView = Mathf.Lerp(normalCam.fieldOfView, baseFOV * sprintFOVModifier, Time.deltaTime * 8f); }
                 else { normalCam.fieldOfView = Mathf.Lerp(normalCam.fieldOfView, baseFOV, Time.deltaTime * 8f); ; }
 
-                normalCam.transform.localPosition = Vector3.Lerp(normalCam.transform.localPosition, origin, Time.deltaTime * 6f);
+                if(crouched) normalCam.transform.localPosition = Vector3.Lerp(normalCam.transform.localPosition, origin + Vector3.down * crouchAmount, Time.deltaTime * 6f); //!
+                else normalCam.transform.localPosition = Vector3.Lerp(normalCam.transform.localPosition, origin, Time.deltaTime * 6f); //!
             }
         }
 
@@ -229,6 +268,28 @@ namespace Com.Kawaiisun.SimpleHostile
         {
             float t_health_ratio = (float)current_health / (float)max_health;
             ui_healthbar.localScale = Vector3.Lerp(ui_healthbar.localScale, new Vector3(t_health_ratio, 1, 1), Time.deltaTime * 8f);
+        }
+
+        [PunRPC]
+        void SetCrouch (bool p_state) //!
+        {
+            if (crouched == p_state) return;
+
+            crouched = p_state;
+
+            if (crouched)
+            {
+                standingCollider.SetActive(false);
+                crouchingCollider.SetActive(true);
+                weaponParentCurrentPos += Vector3.down * crouchAmount;
+            }
+
+            else
+            {
+                standingCollider.SetActive(true);
+                crouchingCollider.SetActive(false);
+                weaponParentCurrentPos -= Vector3.down * crouchAmount;
+            }
         }
 
         #endregion
