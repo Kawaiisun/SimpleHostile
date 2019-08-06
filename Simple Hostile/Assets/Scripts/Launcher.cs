@@ -16,7 +16,6 @@ namespace Com.Kawaiisun.SimpleHostile
         public override void OnConnectedToMaster()
         {
             Debug.Log("CONNECTED!");
-            Join();
 
             base.OnConnectedToMaster();
         }
