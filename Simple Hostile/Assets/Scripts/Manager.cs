@@ -7,7 +7,8 @@ namespace Com.Kawaiisun.SimpleHostile
 {
     public class Manager : MonoBehaviour
     {
-        public string player_prefab;
+        public string player_prefab_string;
+        public GameObject player_prefab;
         public Transform[] spawn_points;
 
         private void Start()
@@ -18,7 +19,17 @@ namespace Com.Kawaiisun.SimpleHostile
         public void Spawn ()
         {
             Transform t_spawn = spawn_points[Random.Range(0, spawn_points.Length)];
-            PhotonNetwork.Instantiate(player_prefab, t_spawn.position, t_spawn.rotation);
+
+            if (PhotonNetwork.IsConnected)
+            {
+                PhotonNetwork.Instantiate(player_prefab_string, t_spawn.position, t_spawn.rotation);
+            }
+
+            else
+            {
+                Debug.Log("WORKING");
+                GameObject newPlayer = Instantiate(player_prefab, t_spawn.position, t_spawn.rotation) as GameObject;
+            }
         }
     }
 }

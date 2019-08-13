@@ -6,14 +6,14 @@ using Photon.Pun;
 
 namespace Com.Kawaiisun.SimpleHostile
 {
-    public class Player : MonoBehaviourPunCallbacks
+    public class Player : MonoBehaviourPunCallbacks, IPunObservable //!
     {
 
         #region Variables
 
         public float speed;
         public float sprintModifier;
-        public float crouchModifier; //!
+        public float crouchModifier;
         public float slideModifier;
         public float jumpForce;
         public float lengthOfSlide;
@@ -24,10 +24,10 @@ namespace Com.Kawaiisun.SimpleHostile
         public Transform groundDetector;
         public LayerMask ground;
 
-        public float slideAmount; //!
-        public float crouchAmount; //!
-        public GameObject standingCollider; //!
-        public GameObject crouchingCollider; //!
+        public float slideAmount;
+        public float crouchAmount;
+        public GameObject standingCollider;
+        public GameObject crouchingCollider;
 
         private Transform ui_healthbar;
         private Text ui_ammo;
@@ -50,13 +50,35 @@ namespace Com.Kawaiisun.SimpleHostile
         private Manager manager;
         private Weapon weapon;
 
-        private bool crouched; //!
+        private bool crouched;
 
         private bool sliding;
         private float slide_time;
         private Vector3 slide_dir;
 
+        private float aimAngle;
+
         #endregion
+        
+        
+        
+        #region Photon Callbacks
+
+        public void OnPhotonSerializeView(PhotonStream p_stream, PhotonMessageInfo p_message) //!
+        {
+            if (p_stream.IsWriting)
+            {
+                p_stream.SendNext((int)(weaponParent.transform.localEulerAngles.x * 100f));
+            }
+            else
+            {
+                aimAngle = (int)p_stream.ReceiveNext() / 100f;
+            }
+        }
+
+        #endregion
+
+
 
         #region MonoBehaviour Callbacks
 
@@ -68,7 +90,13 @@ namespace Com.Kawaiisun.SimpleHostile
             current_health = max_health;
 
             cameraParent.SetActive(photonView.IsMine);
-            if(!photonView.IsMine) gameObject.layer = 11;
+
+            if (!photonView.IsMine) //!
+            {
+                gameObject.layer = 11;
+                standingCollider.layer = 11;
+                crouchingCollider.layer = 11;
+            }
 
             baseFOV = normalCam.fieldOfView;
             origin = normalCam.transform.localPosition;
@@ -90,7 +118,11 @@ namespace Com.Kawaiisun.SimpleHostile
 
         private void Update()
         {
-            if (!photonView.IsMine) return;
+            if (!photonView.IsMine)
+            {
+                RefreshMultiplayerState();
+                return;
+            }
 
             //Axles
             float t_hmove = Input.GetAxisRaw("Horizontal");
@@ -100,17 +132,17 @@ namespace Com.Kawaiisun.SimpleHostile
             //Controls
             bool sprint = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
             bool jump = Input.GetKeyDown(KeyCode.Space);
-            bool crouch = Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl); //!
+            bool crouch = Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl);
 
 
             //States
-            bool isGrounded = Physics.Raycast(groundDetector.position, Vector3.down, 0.15f, ground); //!
+            bool isGrounded = Physics.Raycast(groundDetector.position, Vector3.down, 0.15f, ground);
             bool isJumping = jump && isGrounded;
             bool isSprinting = sprint && t_vmove > 0 && !isJumping && isGrounded;
-            bool isCrouching = crouch && !isSprinting && !isJumping && isGrounded; //!
+            bool isCrouching = crouch && !isSprinting && !isJumping && isGrounded;
 
 
-            //Crouching //!
+            //Crouching
             if (isCrouching)
             {
                 photonView.RPC("SetCrouch", RpcTarget.All, !crouched);
@@ -120,14 +152,14 @@ namespace Com.Kawaiisun.SimpleHostile
             //Jumping
             if (isJumping)
             {
-                if(crouched) photonView.RPC("SetCrouch", RpcTarget.All, false); //!
+                if(crouched) photonView.RPC("SetCrouch", RpcTarget.All, false);
                 rig.AddForce(Vector3.up * jumpForce);
             }
 
             if (Input.GetKeyDown(KeyCode.U)) TakeDamage(100);
 
 
-            //Head Bob //!
+            //Head Bob
             if (sliding)
             {
                 //sliding
@@ -202,12 +234,12 @@ namespace Com.Kawaiisun.SimpleHostile
 
                 if (isSprinting)
                 {
-                    if (crouched) photonView.RPC("SetCrouch", RpcTarget.All, false); //!
+                    if (crouched) photonView.RPC("SetCrouch", RpcTarget.All, false);
                     t_adjustedSpeed *= sprintModifier;
                 }
                 else if (crouched)
                 {
-                    t_adjustedSpeed *= crouchModifier; //!
+                    t_adjustedSpeed *= crouchModifier;
                 }
             }
             else
@@ -233,29 +265,42 @@ namespace Com.Kawaiisun.SimpleHostile
                 sliding = true;
                 slide_dir = t_direction;
                 slide_time = lengthOfSlide;
-                weaponParentCurrentPos += Vector3.down * (slideAmount - crouchAmount); //!
-                if (!crouched) photonView.RPC("SetCrouch", RpcTarget.All, true); //!
+                weaponParentCurrentPos += Vector3.down * (slideAmount - crouchAmount);
+                if (!crouched) photonView.RPC("SetCrouch", RpcTarget.All, true);
             }
 
             //Camera Stuff
             if (sliding)
             {
                 normalCam.fieldOfView = Mathf.Lerp(normalCam.fieldOfView, baseFOV * sprintFOVModifier * 1.15f, Time.deltaTime * 8f);
-                normalCam.transform.localPosition = Vector3.Lerp(normalCam.transform.localPosition, origin + Vector3.down * slideAmount, Time.deltaTime * 6f); //!
+                normalCam.transform.localPosition = Vector3.Lerp(normalCam.transform.localPosition, origin + Vector3.down * slideAmount, Time.deltaTime * 6f);
             }
             else
             {
                 if (isSprinting) { normalCam.fieldOfView = Mathf.Lerp(normalCam.fieldOfView, baseFOV * sprintFOVModifier, Time.deltaTime * 8f); }
                 else { normalCam.fieldOfView = Mathf.Lerp(normalCam.fieldOfView, baseFOV, Time.deltaTime * 8f); ; }
 
-                if(crouched) normalCam.transform.localPosition = Vector3.Lerp(normalCam.transform.localPosition, origin + Vector3.down * crouchAmount, Time.deltaTime * 6f); //!
-                else normalCam.transform.localPosition = Vector3.Lerp(normalCam.transform.localPosition, origin, Time.deltaTime * 6f); //!
+                if(crouched) normalCam.transform.localPosition = Vector3.Lerp(normalCam.transform.localPosition, origin + Vector3.down * crouchAmount, Time.deltaTime * 6f);
+                else normalCam.transform.localPosition = Vector3.Lerp(normalCam.transform.localPosition, origin, Time.deltaTime * 6f);
             }
         }
 
         #endregion
 
         #region Private Methods
+
+        void RefreshMultiplayerState () //!
+        {
+            float cacheEulY = weaponParent.localEulerAngles.y;
+
+            Quaternion targetRotation = Quaternion.identity * Quaternion.AngleAxis(aimAngle, Vector3.right);
+            weaponParent.rotation = Quaternion.Slerp(weaponParent.rotation, targetRotation, Time.deltaTime * 8f);
+
+            Vector3 finalRotation = weaponParent.localEulerAngles;
+            finalRotation.y = cacheEulY;
+
+            weaponParent.localEulerAngles = finalRotation;
+        }
 
         void HeadBob (float p_z, float p_x_intensity, float p_y_intensity)
         {
@@ -271,7 +316,7 @@ namespace Com.Kawaiisun.SimpleHostile
         }
 
         [PunRPC]
-        void SetCrouch (bool p_state) //!
+        void SetCrouch (bool p_state)
         {
             if (crouched == p_state) return;
 

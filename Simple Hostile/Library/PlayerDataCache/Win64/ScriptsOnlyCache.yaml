@@ -4,8 +4,9 @@ ScriptsOnlyBuild:
     - Com.Kawaiisun.SimpleHostile.Gun
     - Com.Kawaiisun.SimpleHostile.Launcher
     - Com.Kawaiisun.SimpleHostile.Look
+    - Com.Kawaiisun.SimpleHostile.MainMenu
     - Com.Kawaiisun.SimpleHostile.Manager
-    - Com.Kawaiisun.SimpleHostile.Motion
+    - Com.Kawaiisun.SimpleHostile.Player
     - Com.Kawaiisun.SimpleHostile.Sway
     - Com.Kawaiisun.SimpleHostile.Weapon
     - Photon.Pun.Demo.Asteroids.Asteroid
@@ -31,11 +32,19 @@ ScriptsOnlyBuild:
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
     - UnityEditor.Graphs.AnimatorControllerTool
+    UnityEditor.TestRunner.dll:
+    - UnityEditor.TestTools.TestRunner.TestListCacheData
     UnityEngine.UI.dll:
+    - UnityEngine.EventSystems.EventSystem
+    - UnityEngine.EventSystems.StandaloneInputModule
+    - UnityEngine.UI.Button
+    - UnityEngine.UI.CanvasScaler
+    - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
     - UnityEngine.UI.Shadow
     - UnityEngine.UI.Slider
     - UnityEngine.UI.Text
+    - UnityEngine.UI.VerticalLayoutGroup
   sceneClasses:
     Assets/Scenes/Map.unity:
     - Class: 1
@@ -56,6 +65,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 48
       Script: {instanceID: 0}
+    - Class: 54
+      Script: {instanceID: 0}
     - Class: 64
       Script: {instanceID: 0}
     - Class: 65
@@ -69,10 +80,48 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 10854}
+      Script: {instanceID: 9370}
+    - Class: 114
+      Script: {instanceID: 9386}
+    - Class: 114
+      Script: {instanceID: 9392}
+    - Class: 114
+      Script: {instanceID: 9398}
+    - Class: 114
+      Script: {instanceID: 9406}
+    - Class: 114
+      Script: {instanceID: 9442}
+    - Class: 114
+      Script: {instanceID: 9444}
+    - Class: 114
+      Script: {instanceID: 9990}
+    - Class: 114
+      Script: {instanceID: 10108}
+    - Class: 114
+      Script: {instanceID: 10298}
+    - Class: 114
+      Script: {instanceID: 10328}
+    - Class: 114
+      Script: {instanceID: 10426}
+    - Class: 114
+      Script: {instanceID: 10856}
+    - Class: 114
+      Script: {instanceID: 10916}
     - Class: 115
       Script: {instanceID: 0}
+    - Class: 128
+      Script: {instanceID: 0}
+    - Class: 136
+      Script: {instanceID: 0}
+    - Class: 143
+      Script: {instanceID: 0}
     - Class: 157
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
       Script: {instanceID: 0}
     - Class: 258
       Script: {instanceID: 0}
@@ -103,6 +152,10 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 82
+      Script: {instanceID: 0}
+    - Class: 83
+      Script: {instanceID: 0}
     - Class: 90
       Script: {instanceID: 0}
     - Class: 91
@@ -119,6 +172,24 @@ ScriptsOnlyBuild:
       Script: {instanceID: 9314}
     - Class: 114
       Script: {instanceID: 9370}
+    - Class: 114
+      Script: {instanceID: 9384}
+    - Class: 114
+      Script: {instanceID: 9386}
+    - Class: 114
+      Script: {instanceID: 9392}
+    - Class: 114
+      Script: {instanceID: 9398}
+    - Class: 114
+      Script: {instanceID: 9406}
+    - Class: 114
+      Script: {instanceID: 9438}
+    - Class: 114
+      Script: {instanceID: 9442}
+    - Class: 114
+      Script: {instanceID: 9444}
+    - Class: 114
+      Script: {instanceID: 9454}
     - Class: 114
       Script: {instanceID: 9538}
     - Class: 114
@@ -148,19 +219,21 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10328}
     - Class: 114
-      Script: {instanceID: 10424}
+      Script: {instanceID: 10350}
     - Class: 114
-      Script: {instanceID: 10478}
+      Script: {instanceID: 10426}
     - Class: 114
-      Script: {instanceID: 10486}
+      Script: {instanceID: 10480}
     - Class: 114
-      Script: {instanceID: 10490}
+      Script: {instanceID: 10488}
     - Class: 114
-      Script: {instanceID: 10768}
+      Script: {instanceID: 10492}
     - Class: 114
-      Script: {instanceID: 10914}
+      Script: {instanceID: 10770}
     - Class: 114
-      Script: {instanceID: 10986}
+      Script: {instanceID: 10916}
+    - Class: 114
+      Script: {instanceID: 10988}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -182,6 +255,8 @@ ScriptsOnlyBuild:
     - Class: 213
       Script: {instanceID: 0}
     - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
       Script: {instanceID: 0}
     - Class: 224
       Script: {instanceID: 0}
@@ -344,10 +419,10 @@ ScriptsOnlyBuild:
     className: DemoHubManager
   - hash:
       serializedVersion: 2
-      Hash: 6fa1d8744d12590df4680c3b23ad8c89
+      Hash: c9f1aa5644813204f436734a7d109705
     assemblyName: Assembly-CSharp.dll
     namespaceName: Com.Kawaiisun.SimpleHostile
-    className: Motion
+    className: Player
   - hash:
       serializedVersion: 2
       Hash: cf9f5cf2c3145a37ac07f00e50e460f9
@@ -546,18 +621,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_InputField
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: UnityEngine.Advertisements.dll
-    namespaceName: UnityEngine.Advertisements
-    className: CallbackExecutor
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: UnityEngine.Advertisements.dll
-    namespaceName: UnityEngine.Advertisements.Editor
-    className: Placeholder
   - hash:
       serializedVersion: 2
       Hash: b1f26da3046d8b188758169a9d6b1078
@@ -1256,7 +1319,7 @@ ScriptsOnlyBuild:
     className: LobbyMainPanel
   - hash:
       serializedVersion: 2
-      Hash: 4d4c3d1bd44505a77cc03a932e301a2a
+      Hash: 52e97e825b44dbda1400fa22149d1532
     assemblyName: Assembly-CSharp.dll
     namespaceName: Com.Kawaiisun.SimpleHostile
     className: Weapon
@@ -1284,6 +1347,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: ActivationPlayableAsset
+  - hash:
+      serializedVersion: 2
+      Hash: a8f62e8abfc2e17b876523a3e00e4dc4
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Com.Kawaiisun.SimpleHostile
+    className: MainMenu
   - hash:
       serializedVersion: 2
       Hash: 11bdd61587db747672b66c52442395d8
@@ -1334,7 +1403,7 @@ ScriptsOnlyBuild:
     className: FriendItem
   - hash:
       serializedVersion: 2
-      Hash: 4ed4ce3236187aeb8447e6ff7cd28a15
+      Hash: 90e5131401f68c3478650762ba918b06
     assemblyName: Assembly-CSharp.dll
     namespaceName: Com.Kawaiisun.SimpleHostile
     className: Gun
@@ -1556,7 +1625,7 @@ ScriptsOnlyBuild:
     className: CurrentRoomMasterClientIdProperty
   - hash:
       serializedVersion: 2
-      Hash: 1236682b07671cc5484c213173bb4b9b
+      Hash: 65d93372d033810611a6adc0de7c23ba
     assemblyName: Assembly-CSharp.dll
     namespaceName: Com.Kawaiisun.SimpleHostile
     className: Manager
