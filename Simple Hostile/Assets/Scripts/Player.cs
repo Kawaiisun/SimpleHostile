@@ -42,7 +42,7 @@ namespace Com.Kawaiisun.SimpleHostile
         private float idleCounter;
 
         private float baseFOV;
-        private float sprintFOVModifier = 1.5f;
+        private float sprintFOVModifier = 1.2f;
         private Vector3 origin;
 
         private int current_health;
@@ -177,21 +177,21 @@ namespace Com.Kawaiisun.SimpleHostile
             {
                 //walking
                 HeadBob(movementCounter, 0.035f, 0.035f);
-                movementCounter += Time.deltaTime * 3f;
+                movementCounter += Time.deltaTime * 6f;
                 weaponParent.localPosition = Vector3.Lerp(weaponParent.localPosition, targetWeaponBobPosition, Time.deltaTime * 6f);
             }
             else if(crouched)
             {
                 //crouching
                 HeadBob(movementCounter, 0.02f, 0.02f);
-                movementCounter += Time.deltaTime * 1.75f;
+                movementCounter += Time.deltaTime * 4f;
                 weaponParent.localPosition = Vector3.Lerp(weaponParent.localPosition, targetWeaponBobPosition, Time.deltaTime * 6f);
             }
             else
             {
                 //sprinting
-                HeadBob(movementCounter, 0.15f, 0.075f);
-                movementCounter += Time.deltaTime * 7f;
+                HeadBob(movementCounter, 0.15f, 0.055f);
+                movementCounter += Time.deltaTime * 13.5f;
                 weaponParent.localPosition = Vector3.Lerp(weaponParent.localPosition, targetWeaponBobPosition, Time.deltaTime * 10f);
             }
 

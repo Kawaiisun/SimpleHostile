@@ -36,5 +36,6 @@ MonoBehaviour:
   - Shoot
   - TakeDamage
   - SetCrouch
+  - ReloadRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1

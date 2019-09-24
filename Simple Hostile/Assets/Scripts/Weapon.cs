@@ -60,7 +60,7 @@ namespace Com.Kawaiisun.SimpleHostile
                         }
                     }
 
-                    if (Input.GetKeyDown(KeyCode.R)) StartCoroutine(Reload(loadout[currentIndex].reload));
+                    if (Input.GetKeyDown(KeyCode.R)) photonView.RPC("ReloadRPC", RpcTarget.All);
 
                     //cooldown
                     if (currentCooldown > 0) currentCooldown -= Time.deltaTime;
@@ -75,10 +75,20 @@ namespace Com.Kawaiisun.SimpleHostile
 
         #region Private Methods
 
+        [PunRPC]
+        private void ReloadRPC ()
+        {
+            StartCoroutine(Reload(loadout[currentIndex].reload));
+        }
+
         IEnumerator Reload (float p_wait)
         {
             isReloading = true;
-            currentWeapon.SetActive(false);
+
+            if(currentWeapon.GetComponent<Animator>())
+                currentWeapon.GetComponent<Animator>().Play("Reload", 0, 0);
+            else
+                currentWeapon.SetActive(false);
 
             yield return new WaitForSeconds(p_wait);
 
