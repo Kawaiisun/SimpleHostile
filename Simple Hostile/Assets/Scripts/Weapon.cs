@@ -113,6 +113,8 @@ namespace Com.Kawaiisun.SimpleHostile
             t_newWeapon.transform.localEulerAngles = Vector3.zero;
             t_newWeapon.GetComponent<Sway>().isMine = photonView.IsMine;
 
+            t_newWeapon.GetComponent<Animator>().Play("Equip", 0, 0);
+
             currentWeapon = t_newWeapon;
         }
 

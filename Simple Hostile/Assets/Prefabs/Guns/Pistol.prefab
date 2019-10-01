@@ -74,6 +74,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1997507513380148125}
   - component: {fileID: 2437717474738265286}
+  - component: {fileID: 6972656780412857883}
   m_Layer: 10
   m_Name: Pistol
   m_TagString: Untagged
@@ -112,6 +113,25 @@ MonoBehaviour:
   intensity: 1
   smooth: 10
   isMine: 0
+--- !u!95 &6972656780412857883
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997507513380148126}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c9efac00b80d31a48b1337a9f6eedd99, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1997507513624612086
 GameObject:
   m_ObjectHideFlags: 0
