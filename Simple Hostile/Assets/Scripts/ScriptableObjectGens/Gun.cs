@@ -18,6 +18,11 @@ namespace Com.Kawaiisun.SimpleHostile
         public float kickback;
         public float aimSpeed;
         public float reload;
+        [Range(0, 1)] public float mainFOV;
+        [Range(0, 1)] public float weaponFOV;
+        public AudioClip gunshotSound;
+        public float pitchRandomization;
+        public float shotVolume;
         public GameObject prefab;
 
         private int stash; //current ammo

@@ -175,6 +175,7 @@
     <Compile Include="Assets\Scripts\Look.cs" />
     <Compile Include="Assets\Scripts\MainMenu.cs" />
     <Compile Include="Assets\Scripts\Manager.cs" />
+    <Compile Include="Assets\Scripts\Pause.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\ScriptableObjectGens\Gun.cs" />
     <Compile Include="Assets\Scripts\Sway.cs" />

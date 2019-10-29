@@ -28,6 +28,7 @@ namespace Com.Kawaiisun.SimpleHostile
 
         private void Update()
         {
+            if (Pause.paused) return; //!
             UpdateSway();
         }
 

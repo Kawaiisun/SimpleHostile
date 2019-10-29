@@ -12,7 +12,8 @@ namespace Com.Kawaiisun.SimpleHostile
         public static bool cursorLocked = true;
 
         public Transform player;
-        public Transform cams;
+        public Transform normalCam;
+        public Transform weaponCam;
         public Transform weapon;
 
         public float xSensitivity;
@@ -27,17 +28,20 @@ namespace Com.Kawaiisun.SimpleHostile
 
         void Start()
         {
-            camCenter = cams.localRotation; //set rotation origin for cameras to camCenter
+            camCenter = normalCam.localRotation; //set rotation origin for cameras to camCenter
         }
 
         void Update()
         {
             if (!photonView.IsMine) return;
+            if (Pause.paused) return;
 
             SetY();
             SetX();
 
             UpdateCursorLock();
+
+            weaponCam.rotation = normalCam.rotation;
         }
 
         #endregion
@@ -48,14 +52,14 @@ namespace Com.Kawaiisun.SimpleHostile
         {
             float t_input = Input.GetAxis("Mouse Y") * ySensitivity * Time.deltaTime;
             Quaternion t_adj = Quaternion.AngleAxis(t_input, -Vector3.right);
-            Quaternion t_delta = cams.localRotation * t_adj;
+            Quaternion t_delta = normalCam.localRotation * t_adj;
 
             if (Quaternion.Angle(camCenter, t_delta) < maxAngle)
             {
-                cams.localRotation = t_delta;
+                normalCam.localRotation = t_delta;
             }
 
-            weapon.rotation = cams.rotation;
+            weapon.rotation = normalCam.rotation;
         }
 
         void SetX()

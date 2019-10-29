@@ -11,9 +11,12 @@ namespace Com.Kawaiisun.SimpleHostile
         #region Variables
 
         public Gun[] loadout;
+        [HideInInspector] public Gun currentGunData;
+
         public Transform weaponParent;
         public GameObject bulletholePrefab;
         public LayerMask canBeShot;
+        public AudioSource sfx;
         public bool isAiming = false;
 
         private float currentCooldown;
@@ -34,6 +37,8 @@ namespace Com.Kawaiisun.SimpleHostile
 
         void Update()
         {
+            if (Pause.paused && photonView.IsMine) return;
+
             if (photonView.IsMine && Input.GetKeyDown(KeyCode.Alpha1)) { photonView.RPC("Equip", RpcTarget.All, 0); }
             if (photonView.IsMine && Input.GetKeyDown(KeyCode.Alpha2)) { photonView.RPC("Equip", RpcTarget.All, 1); }
 
@@ -41,8 +46,6 @@ namespace Com.Kawaiisun.SimpleHostile
             {
                 if (photonView.IsMine)
                 {
-                    Aim(Input.GetMouseButton(1));
-
                     if (loadout[currentIndex].burst != 1)
                     {
                         if (Input.GetMouseButtonDown(0) && currentCooldown <= 0)
@@ -113,15 +116,26 @@ namespace Com.Kawaiisun.SimpleHostile
             t_newWeapon.transform.localEulerAngles = Vector3.zero;
             t_newWeapon.GetComponent<Sway>().isMine = photonView.IsMine;
 
+            if (photonView.IsMine) ChangeLayersRecursively(t_newWeapon, 10);
+            else ChangeLayersRecursively(t_newWeapon, 0);
+
             t_newWeapon.GetComponent<Animator>().Play("Equip", 0, 0);
 
             currentWeapon = t_newWeapon;
+            currentGunData = loadout[p_ind];
+        }
+        private void ChangeLayersRecursively (GameObject p_target, int p_layer)
+        {
+            p_target.layer = p_layer;
+            foreach (Transform a in p_target.transform) ChangeLayersRecursively(a.gameObject, p_layer);
         }
 
-        void Aim (bool p_isAiming)
+        public void Aim (bool p_isAiming)
         {
+            if (!currentWeapon) return;
+
             isAiming = p_isAiming;
-            Transform t_anchor = currentWeapon.transform.Find("Anchor");
+            Transform t_anchor = currentWeapon.transform.Find("Root");
             Transform t_state_ads = currentWeapon.transform.Find("States/ADS");
             Transform t_state_hip = currentWeapon.transform.Find("States/Hip");
 
@@ -165,10 +179,18 @@ namespace Com.Kawaiisun.SimpleHostile
                     //shooting other player on network
                     if(t_hit.collider.gameObject.layer == 11)
                     {
-                        t_hit.collider.transform.root.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, loadout[currentIndex].damage); //!
+                        t_hit.collider.transform.root.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, loadout[currentIndex].damage);
                     }
                 }
             }
+
+            //sound
+            sfx.Stop();
+            sfx.clip = currentGunData.gunshotSound;
+            sfx.pitch = 1 - currentGunData.pitchRandomization + Random.Range(-currentGunData.pitchRandomization, currentGunData.pitchRandomization);
+            sfx.volume = currentGunData.shotVolume;
+            sfx.Play();
+            Debug.Log("PLAY SOUND " + currentGunData.gunshotSound.name);
 
             //gun fx
             currentWeapon.transform.Rotate(-loadout[currentIndex].recoil, 0, 0);

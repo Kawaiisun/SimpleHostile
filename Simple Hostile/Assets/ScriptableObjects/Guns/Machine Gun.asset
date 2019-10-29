@@ -21,6 +21,11 @@ MonoBehaviour:
   bloom: 20
   recoil: 4
   kickback: 0.05
-  aimSpeed: 7
+  aimSpeed: 10
   reload: 2
+  mainFOV: 0.8
+  weaponFOV: 0.2
+  gunshotSound: {fileID: 8300000, guid: c35c1d7f4d3f39b43a42a0d7687c62d6, type: 3}
+  pitchRandomization: 0.2
+  shotVolume: 0.8
   prefab: {fileID: 1997507513380148126, guid: a74661b42f4f4bb4ca1218cdf36e1550, type: 3}
