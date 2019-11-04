@@ -11,6 +11,7 @@ namespace Com.Kawaiisun.SimpleHostile
         public int damage;
         public int ammo;
         public int burst; // 0 semi | 1 auto | 2+ burst fire
+        public int pellets;
         public int clipsize;
         public float firerate;
         public float bloom;
@@ -24,6 +25,7 @@ namespace Com.Kawaiisun.SimpleHostile
         public float pitchRandomization;
         public float shotVolume;
         public GameObject prefab;
+        public bool recovery;
 
         private int stash; //current ammo
         private int clip; //current clip
