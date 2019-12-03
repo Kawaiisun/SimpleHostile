@@ -25,6 +25,7 @@ namespace Com.Kawaiisun.SimpleHostile
         public float pitchRandomization;
         public float shotVolume;
         public GameObject prefab;
+        public GameObject display;
         public bool recovery;
 
         private int stash; //current ammo

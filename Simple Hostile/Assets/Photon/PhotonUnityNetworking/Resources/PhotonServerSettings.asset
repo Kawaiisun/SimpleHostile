@@ -37,5 +37,7 @@ MonoBehaviour:
   - TakeDamage
   - SetCrouch
   - ReloadRPC
+  - Disable
+  - PickupWeapon
   DisableAutoOpenWizard: 1
   ShowSettings: 1

@@ -16,6 +16,7 @@ MonoBehaviour:
   damage: 100
   ammo: 150
   burst: 1
+  pellets: 0
   clipsize: 32
   firerate: 0.1
   bloom: 20
@@ -24,8 +25,10 @@ MonoBehaviour:
   aimSpeed: 10
   reload: 2
   mainFOV: 0.8
-  weaponFOV: 0.2
+  weaponFOV: 0.3
   gunshotSound: {fileID: 8300000, guid: c35c1d7f4d3f39b43a42a0d7687c62d6, type: 3}
   pitchRandomization: 0.2
   shotVolume: 0.8
   prefab: {fileID: 1997507513380148126, guid: a74661b42f4f4bb4ca1218cdf36e1550, type: 3}
+  display: {fileID: 6364139951464357674, guid: eea594948fd6afa48866aba218a8f77b, type: 3}
+  recovery: 0

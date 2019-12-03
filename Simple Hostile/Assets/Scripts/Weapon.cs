@@ -10,20 +10,26 @@ namespace Com.Kawaiisun.SimpleHostile
     {
         #region Variables
 
-        public Gun[] loadout;
+        public List<Gun> loadout;
         [HideInInspector] public Gun currentGunData;
 
         public Transform weaponParent;
         public GameObject bulletholePrefab;
         public LayerMask canBeShot;
         public AudioSource sfx;
+        public AudioClip hitmarkerSound;
         public bool isAiming = false;
 
         private float currentCooldown;
         private int currentIndex;
         private GameObject currentWeapon;
 
+        private Image hitmarkerImage;
+        private float hitmarkerWait;
+
         private bool isReloading;
+
+        private Color CLEARWHITE = new Color(1, 1, 1, 0);
 
         #endregion
 
@@ -32,6 +38,10 @@ namespace Com.Kawaiisun.SimpleHostile
         private void Start()
         {
             foreach (Gun a in loadout) a.Initialize();
+
+            hitmarkerImage = GameObject.Find("HUD/Hitmarker/Image").GetComponent<Image>();
+            hitmarkerImage.color = CLEARWHITE;
+
             Equip(0);
         }
 
@@ -71,6 +81,18 @@ namespace Com.Kawaiisun.SimpleHostile
 
                 //weapon position elasticity
                 currentWeapon.transform.localPosition = Vector3.Lerp(currentWeapon.transform.localPosition, Vector3.zero, Time.deltaTime * 4f);
+            }
+
+            if(photonView.IsMine)
+            {
+                if(hitmarkerWait > 0)
+                {
+                    hitmarkerWait -= Time.deltaTime;
+                }
+                else if(hitmarkerImage.color.a > 0)
+                {
+                    hitmarkerImage.color = Color.Lerp(hitmarkerImage.color, CLEARWHITE, Time.deltaTime * 2f);
+                }
             }
         }
 
@@ -124,15 +146,35 @@ namespace Com.Kawaiisun.SimpleHostile
             currentWeapon = t_newWeapon;
             currentGunData = loadout[p_ind];
         }
+
+        [PunRPC]
+        void PickupWeapon(string name)
+        {
+            Gun newWeapon = GunLibrary.FindGun(name);
+
+            if (loadout.Count >= 2)
+            {
+                loadout[currentIndex] = newWeapon;
+                Equip(currentIndex);
+            }
+            else
+            {
+                loadout.Add(newWeapon);
+                Equip(loadout.Count - 1);
+            }
+        }
+
         private void ChangeLayersRecursively (GameObject p_target, int p_layer)
         {
             p_target.layer = p_layer;
             foreach (Transform a in p_target.transform) ChangeLayersRecursively(a.gameObject, p_layer);
         }
 
-        public void Aim (bool p_isAiming)
+        public bool Aim (bool p_isAiming)
         {
-            if (!currentWeapon) return;
+            if (!currentWeapon) return false;
+
+            if (isReloading) p_isAiming = false;
 
             isAiming = p_isAiming;
             Transform t_anchor = currentWeapon.transform.Find("Root");
@@ -149,6 +191,8 @@ namespace Com.Kawaiisun.SimpleHostile
                 //hip
                 t_anchor.position = Vector3.Lerp(t_anchor.position, t_state_hip.position, Time.deltaTime * loadout[currentIndex].aimSpeed);
             }
+
+            return p_isAiming;
         }
 
         [PunRPC]
@@ -181,7 +225,26 @@ namespace Com.Kawaiisun.SimpleHostile
                         //shooting other player on network
                         if (t_hit.collider.gameObject.layer == 11)
                         {
+                            //give damage
                             t_hit.collider.transform.root.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, loadout[currentIndex].damage);
+
+                            //show hitmarker
+                            hitmarkerImage.color = Color.white;
+                            sfx.PlayOneShot(hitmarkerSound);
+                            hitmarkerWait = 1f;
+                        }
+
+
+                        //shooting target
+                        if (t_hit.collider.gameObject.layer == 12)
+                        {
+                            //destroy
+                            Destroy(t_hit.collider.gameObject);
+
+                            //show hitmarker
+                            hitmarkerImage.color = Color.white;
+                            sfx.PlayOneShot(hitmarkerSound);
+                            hitmarkerWait = 1f;
                         }
                     }
                 }

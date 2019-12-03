@@ -30,4 +30,5 @@ MonoBehaviour:
   pitchRandomization: 0.2
   shotVolume: 0.8
   prefab: {fileID: 1997507513380148126, guid: a74661b42f4f4bb4ca1218cdf36e1550, type: 3}
+  display: {fileID: 6364139951464357674, guid: eea594948fd6afa48866aba218a8f77b, type: 3}
   recovery: 0
