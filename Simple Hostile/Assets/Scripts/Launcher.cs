@@ -2,11 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UI;
 
 namespace Com.Kawaiisun.SimpleHostile
 {
+    public class ProfileData
+    {
+        public string username;
+        public int level;
+        public int xp;
+    }
+
     public class Launcher : MonoBehaviourPunCallbacks
     {
+        public InputField usernameField;
+        public static ProfileData myProfile = new ProfileData();
+
         public void Awake()
         {
             PhotonNetwork.AutomaticallySyncScene = true;
@@ -53,6 +64,15 @@ namespace Com.Kawaiisun.SimpleHostile
 
         public void StartGame ()
         {
+            if (string.IsNullOrEmpty(usernameField.text))
+            {
+                myProfile.username = "RANDOM_USER_" + Random.Range(100, 1000);
+            }
+            else
+            {
+                myProfile.username = usernameField.text;
+            }
+
             if(PhotonNetwork.CurrentRoom.PlayerCount == 1)
             {
                 PhotonNetwork.LoadLevel(1);
