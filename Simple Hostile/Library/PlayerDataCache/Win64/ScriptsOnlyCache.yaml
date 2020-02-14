@@ -2,10 +2,13 @@ ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
     - Com.Kawaiisun.SimpleHostile.Gun
+    - Com.Kawaiisun.SimpleHostile.GunLibrary
     - Com.Kawaiisun.SimpleHostile.Launcher
     - Com.Kawaiisun.SimpleHostile.Look
     - Com.Kawaiisun.SimpleHostile.MainMenu
     - Com.Kawaiisun.SimpleHostile.Manager
+    - Com.Kawaiisun.SimpleHostile.Pause
+    - Com.Kawaiisun.SimpleHostile.Pickup
     - Com.Kawaiisun.SimpleHostile.Player
     - Com.Kawaiisun.SimpleHostile.Sway
     - Com.Kawaiisun.SimpleHostile.Weapon
@@ -39,8 +42,14 @@ ScriptsOnlyBuild:
     - UnityEngine.EventSystems.StandaloneInputModule
     - UnityEngine.UI.Button
     - UnityEngine.UI.CanvasScaler
+    - UnityEngine.UI.ContentSizeFitter
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
+    - UnityEngine.UI.InputField
+    - UnityEngine.UI.Mask
+    - UnityEngine.UI.Outline
+    - UnityEngine.UI.ScrollRect
+    - UnityEngine.UI.Scrollbar
     - UnityEngine.UI.Shadow
     - UnityEngine.UI.Slider
     - UnityEngine.UI.Text
@@ -71,16 +80,30 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 65
       Script: {instanceID: 0}
+    - Class: 74
+      Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 82
+      Script: {instanceID: 0}
+    - Class: 83
+      Script: {instanceID: 0}
     - Class: 89
+      Script: {instanceID: 0}
+    - Class: 91
+      Script: {instanceID: 0}
+    - Class: 95
       Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
+      Script: {instanceID: 9314}
+    - Class: 114
       Script: {instanceID: 9370}
+    - Class: 114
+      Script: {instanceID: 9384}
     - Class: 114
       Script: {instanceID: 9386}
     - Class: 114
@@ -90,32 +113,48 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9406}
     - Class: 114
+      Script: {instanceID: 9418}
+    - Class: 114
+      Script: {instanceID: 9438}
+    - Class: 114
       Script: {instanceID: 9442}
     - Class: 114
       Script: {instanceID: 9444}
     - Class: 114
-      Script: {instanceID: 9990}
+      Script: {instanceID: 9454}
     - Class: 114
-      Script: {instanceID: 10108}
+      Script: {instanceID: 9792}
     - Class: 114
-      Script: {instanceID: 10298}
+      Script: {instanceID: 9994}
     - Class: 114
-      Script: {instanceID: 10328}
+      Script: {instanceID: 10112}
     - Class: 114
-      Script: {instanceID: 10426}
+      Script: {instanceID: 10218}
     - Class: 114
-      Script: {instanceID: 10856}
+      Script: {instanceID: 10304}
     - Class: 114
-      Script: {instanceID: 10916}
+      Script: {instanceID: 10334}
+    - Class: 114
+      Script: {instanceID: 10432}
+    - Class: 114
+      Script: {instanceID: 10862}
+    - Class: 114
+      Script: {instanceID: 10922}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
       Script: {instanceID: 0}
+    - Class: 135
+      Script: {instanceID: 0}
     - Class: 136
+      Script: {instanceID: 0}
+    - Class: 137
       Script: {instanceID: 0}
     - Class: 143
       Script: {instanceID: 0}
     - Class: 157
+      Script: {instanceID: 0}
+    - Class: 213
       Script: {instanceID: 0}
     - Class: 222
       Script: {instanceID: 0}
@@ -177,11 +216,21 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9386}
     - Class: 114
+      Script: {instanceID: 9388}
+    - Class: 114
       Script: {instanceID: 9392}
     - Class: 114
       Script: {instanceID: 9398}
     - Class: 114
       Script: {instanceID: 9406}
+    - Class: 114
+      Script: {instanceID: 9408}
+    - Class: 114
+      Script: {instanceID: 9414}
+    - Class: 114
+      Script: {instanceID: 9432}
+    - Class: 114
+      Script: {instanceID: 9434}
     - Class: 114
       Script: {instanceID: 9438}
     - Class: 114
@@ -191,49 +240,51 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9454}
     - Class: 114
-      Script: {instanceID: 9538}
+      Script: {instanceID: 9502}
     - Class: 114
-      Script: {instanceID: 9570}
+      Script: {instanceID: 9540}
     - Class: 114
       Script: {instanceID: 9572}
     - Class: 114
-      Script: {instanceID: 9576}
+      Script: {instanceID: 9574}
     - Class: 114
-      Script: {instanceID: 9904}
+      Script: {instanceID: 9578}
     - Class: 114
-      Script: {instanceID: 9990}
+      Script: {instanceID: 9908}
     - Class: 114
-      Script: {instanceID: 10044}
+      Script: {instanceID: 9994}
     - Class: 114
-      Script: {instanceID: 10108}
+      Script: {instanceID: 10048}
     - Class: 114
-      Script: {instanceID: 10196}
+      Script: {instanceID: 10112}
     - Class: 114
-      Script: {instanceID: 10236}
+      Script: {instanceID: 10200}
     - Class: 114
-      Script: {instanceID: 10288}
+      Script: {instanceID: 10242}
     - Class: 114
       Script: {instanceID: 10294}
     - Class: 114
-      Script: {instanceID: 10298}
+      Script: {instanceID: 10300}
     - Class: 114
-      Script: {instanceID: 10328}
+      Script: {instanceID: 10304}
     - Class: 114
-      Script: {instanceID: 10350}
+      Script: {instanceID: 10334}
     - Class: 114
-      Script: {instanceID: 10426}
+      Script: {instanceID: 10356}
     - Class: 114
-      Script: {instanceID: 10480}
+      Script: {instanceID: 10432}
     - Class: 114
-      Script: {instanceID: 10488}
+      Script: {instanceID: 10486}
     - Class: 114
-      Script: {instanceID: 10492}
+      Script: {instanceID: 10494}
     - Class: 114
-      Script: {instanceID: 10770}
+      Script: {instanceID: 10498}
     - Class: 114
-      Script: {instanceID: 10916}
+      Script: {instanceID: 10776}
     - Class: 114
-      Script: {instanceID: 10988}
+      Script: {instanceID: 10922}
+    - Class: 114
+      Script: {instanceID: 10994}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -419,7 +470,7 @@ ScriptsOnlyBuild:
     className: DemoHubManager
   - hash:
       serializedVersion: 2
-      Hash: c9f1aa5644813204f436734a7d109705
+      Hash: 6c84f7cfd8a9d096afda45b26ae49b13
     assemblyName: Assembly-CSharp.dll
     namespaceName: Com.Kawaiisun.SimpleHostile
     className: Player
@@ -633,6 +684,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: Photon.Pun.Demo.Cockpit
     className: CountOfPlayersOnMasterProperty
+  - hash:
+      serializedVersion: 2
+      Hash: 5b0b16ded97c4b9189ff9fe9185cceb2
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Com.Kawaiisun.SimpleHostile
+    className: GunLibrary
   - hash:
       serializedVersion: 2
       Hash: cf9f5cf2c3145a37ac07f00e50e460f9
@@ -929,6 +986,12 @@ ScriptsOnlyBuild:
     className: AnimationPlayableAsset
   - hash:
       serializedVersion: 2
+      Hash: 719f1525ccd98bdd2b09aaf865858617
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Com.Kawaiisun.SimpleHostile
+    className: Pickup
+  - hash:
+      serializedVersion: 2
       Hash: 0927e41b46e1bd11671f9b5adda4b832
     assemblyName: PhotonUnityNetworking.dll
     namespaceName: Photon.Pun
@@ -1055,7 +1118,7 @@ ScriptsOnlyBuild:
     className: EventSystemSpawner
   - hash:
       serializedVersion: 2
-      Hash: 74bdcd4edc7b7138e00d1782fb12e251
+      Hash: 591537121ff518876b08f9c2604bc30e
     assemblyName: Assembly-CSharp.dll
     namespaceName: Com.Kawaiisun.SimpleHostile
     className: Look
@@ -1247,6 +1310,12 @@ ScriptsOnlyBuild:
     className: SetRoomCustomPropertyUIForm
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Com.Kawaiisun.SimpleHostile
+    className: Pause
+  - hash:
+      serializedVersion: 2
       Hash: 4fe8955e1c662935371b0936cafbb89b
     assemblyName: Assembly-CSharp.dll
     namespaceName: Photon.Chat.UtilityScripts
@@ -1319,7 +1388,7 @@ ScriptsOnlyBuild:
     className: LobbyMainPanel
   - hash:
       serializedVersion: 2
-      Hash: 52e97e825b44dbda1400fa22149d1532
+      Hash: 3e99289a89366f56841ecc490c6ab939
     assemblyName: Assembly-CSharp.dll
     namespaceName: Com.Kawaiisun.SimpleHostile
     className: Weapon
@@ -1403,7 +1472,7 @@ ScriptsOnlyBuild:
     className: FriendItem
   - hash:
       serializedVersion: 2
-      Hash: 90e5131401f68c3478650762ba918b06
+      Hash: d5542df64b38932606ac1b857b0c87f3
     assemblyName: Assembly-CSharp.dll
     namespaceName: Com.Kawaiisun.SimpleHostile
     className: Gun
@@ -1583,7 +1652,7 @@ ScriptsOnlyBuild:
     className: IsConnectedAndReadyProperty
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 5a6acb080f5b0666c76daccebd7d3513
     assemblyName: Assembly-CSharp.dll
     namespaceName: Com.Kawaiisun.SimpleHostile
     className: Launcher
