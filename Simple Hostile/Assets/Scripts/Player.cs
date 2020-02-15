@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
 
 namespace Com.Kawaiisun.SimpleHostile
 {
@@ -28,6 +29,9 @@ namespace Com.Kawaiisun.SimpleHostile
         public Transform weaponParent;
         public Transform groundDetector;
         public LayerMask ground;
+
+        [HideInInspector] public ProfileData playerProfile;
+        public TextMeshPro playerUsername;
 
         public float slideAmount;
         public float crouchAmount;
@@ -78,8 +82,6 @@ namespace Com.Kawaiisun.SimpleHostile
 
         #endregion
         
-        
-        
         #region Photon Callbacks
 
         public void OnPhotonSerializeView(PhotonStream p_stream, PhotonMessageInfo p_message)
@@ -95,8 +97,6 @@ namespace Com.Kawaiisun.SimpleHostile
         }
 
         #endregion
-
-
 
         #region MonoBehaviour Callbacks
 
@@ -137,6 +137,8 @@ namespace Com.Kawaiisun.SimpleHostile
 
                 RefreshHealthBar();
                 ui_username.text = Launcher.myProfile.username;
+
+                photonView.RPC("SyncProfile", RpcTarget.All, Launcher.myProfile.username, Launcher.myProfile.level, Launcher.myProfile.xp);
 
                 anim = GetComponent<Animator>();
             }
@@ -466,6 +468,13 @@ namespace Com.Kawaiisun.SimpleHostile
         {
             float t_health_ratio = (float)current_health / (float)max_health;
             ui_healthbar.localScale = Vector3.Lerp(ui_healthbar.localScale, new Vector3(t_health_ratio, 1, 1), Time.deltaTime * 8f);
+        }
+
+        [PunRPC]
+        private void SyncProfile(string p_username, int p_level, int p_xp)
+        {
+            playerProfile = new ProfileData(p_username, p_level, p_xp);
+            playerUsername.text = playerProfile.username;
         }
 
         [PunRPC]

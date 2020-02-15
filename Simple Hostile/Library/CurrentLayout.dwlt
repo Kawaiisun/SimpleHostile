@@ -21,7 +21,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 2}
-  m_MinSize: {x: 950, y: 372}
+  m_MinSize: {x: 950, y: 544}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -45,7 +45,7 @@ MonoBehaviour:
     y: 0
     width: 1920
     height: 997
-  m_MinSize: {x: 950, y: 372}
+  m_MinSize: {x: 950, y: 544}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &3
 MonoBehaviour:
@@ -111,10 +111,10 @@ MonoBehaviour:
     y: 30
     width: 1920
     height: 947
-  m_MinSize: {x: 681, y: 322}
-  m_MaxSize: {x: 12006, y: 8022}
+  m_MinSize: {x: 681, y: 494}
+  m_MaxSize: {x: 14004, y: 14044}
   vertical: 0
-  controlID: 11978
+  controlID: 4155
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -136,10 +136,10 @@ MonoBehaviour:
     y: 0
     width: 1379
     height: 947
-  m_MinSize: {x: 406, y: 322}
-  m_MaxSize: {x: 8006, y: 8022}
+  m_MinSize: {x: 404, y: 494}
+  m_MaxSize: {x: 10002, y: 14044}
   vertical: 1
-  controlID: 12015
+  controlID: 4132
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -161,10 +161,10 @@ MonoBehaviour:
     y: 0
     width: 1379
     height: 670
-  m_MinSize: {x: 406, y: 222}
-  m_MaxSize: {x: 8006, y: 4022}
+  m_MinSize: {x: 404, y: 222}
+  m_MaxSize: {x: 8004, y: 4022}
   vertical: 0
-  controlID: 12016
+  controlID: 4133
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -239,15 +239,15 @@ MonoBehaviour:
     y: 670
     width: 1379
     height: 277
-  m_MinSize: {x: 102, y: 122}
-  m_MaxSize: {x: 4002, y: 4022}
-  m_ActualView: {fileID: 18}
+  m_MinSize: {x: 232, y: 272}
+  m_MaxSize: {x: 10002, y: 10022}
+  m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
   - {fileID: 18}
   - {fileID: 19}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -385,9 +385,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: c62c0000
+      m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 36dcffff6cdcffff1cddffff20ddffffbaddffffeeddffff88e0ffff8ce0ffff8efbffff1436000026360000743600007e3600007c4d0000824d0000a04d0000b24d0000b64d0000
+      m_ExpandedIDs: 56ccffff86ccffff14cfffff1acfffffacdcffffdcdcffff6edfffff78dfffffa2faffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -447,9 +447,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 597.0279, y: 305.31067, z: 0}
+    m_Target: {x: 565.54663, y: 325.20905, z: 0}
     speed: 2
-    m_Value: {x: 597.0279, y: 305.31067, z: 0}
+    m_Value: {x: 565.54663, y: 325.20905, z: 0}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -482,9 +482,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: -0, y: 0, z: -0, w: -1}
   m_Size:
-    m_Target: 511.51367
+    m_Target: 592.9222
     speed: 2
-    m_Value: 511.51367
+    m_Value: 592.9222
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -688,20 +688,20 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs/UI
+    - Assets/Photon/PhotonUnityNetworking/Resources
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Prefabs/UI
+  - Assets/Photon/PhotonUnityNetworking/Resources
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: D:\WeltonKing\Projects\2. Applications\SimpleHostile\Simple Hostile
+  m_LastProjectPath: D:\WeltonKing\Projects\1. Games\SimpleHostile\Simple Hostile
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 18}
-    m_SelectedIDs: f8310000
-    m_LastClickedID: 12792
-    m_ExpandedIDs: 000000004c2b000024320000c03300000c3800000e3800001038000012380000
+    scrollPos: {x: 0, y: 14}
+    m_SelectedIDs: 58320000
+    m_LastClickedID: 12888
+    m_ExpandedIDs: 00000000202d0000622e0000723300007e330000e6380000e8380000ea380000ec380000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -729,7 +729,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000004c2b000024320000c03300000c3800000e3800001038000012380000
+    m_ExpandedIDs: 00000000202d0000622e0000723300007e330000e6380000e8380000ea380000ec380000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

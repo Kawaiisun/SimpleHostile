@@ -18,7 +18,7 @@ MonoBehaviour:
     AppIdVoice: 
     AppVersion: 
     UseNameServer: 1
-    FixedRegion: 
+    FixedRegion: us
     Server: 
     Port: 0
     Protocol: 0
@@ -39,5 +39,6 @@ MonoBehaviour:
   - ReloadRPC
   - Disable
   - PickupWeapon
+  - SyncProfile
   DisableAutoOpenWizard: 1
   ShowSettings: 1

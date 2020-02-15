@@ -289,25 +289,25 @@
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="Photon3Unity3D">
-      <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Assets/Photon/PhotonLibs/Photon3Unity3D.dll</HintPath>
+      <HintPath>D:/WeltonKing/Projects/1. Games/SimpleHostile/Simple Hostile/Assets/Photon/PhotonLibs/Photon3Unity3D.dll</HintPath>
     </Reference>
     <Reference Include="websocket-sharp">
-      <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Assets/Photon/PhotonLibs/WebSocket/websocket-sharp.dll</HintPath>
+      <HintPath>D:/WeltonKing/Projects/1. Games/SimpleHostile/Simple Hostile/Assets/Photon/PhotonLibs/WebSocket/websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Advertisements">
-      <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
+      <HintPath>D:/WeltonKing/Projects/1. Games/SimpleHostile/Simple Hostile/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
-      <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Editor.dll</HintPath>
+      <HintPath>D:/WeltonKing/Projects/1. Games/SimpleHostile/Simple Hostile/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.StandardEvents.dll</HintPath>
+      <HintPath>D:/WeltonKing/Projects/1. Games/SimpleHostile/Simple Hostile/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
-      <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Tracker.dll</HintPath>
+      <HintPath>D:/WeltonKing/Projects/1. Games/SimpleHostile/Simple Hostile/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
-      <HintPath>D:/WeltonKing/Projects/2. Applications/SimpleHostile/Simple Hostile/Library/PackageCache/com.unity.purchasing@2.0.6/Editor/UnityEditor.Purchasing.dll</HintPath>
+      <HintPath>D:/WeltonKing/Projects/1. Games/SimpleHostile/Simple Hostile/Library/PackageCache/com.unity.purchasing@2.0.6/Editor/UnityEditor.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>D:/System/ProgramFiles/Unity/2019.1.0f2/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>

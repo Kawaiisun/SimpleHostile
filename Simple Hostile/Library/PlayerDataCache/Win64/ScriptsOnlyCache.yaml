@@ -29,6 +29,12 @@ ScriptsOnlyBuild:
     - Photon.Pun.PhotonTransformView
     - Photon.Pun.PhotonView
     - Photon.Pun.ServerSettings
+    Unity.TextMeshPro.dll:
+    - TMPro.TMP_FontAsset
+    - TMPro.TMP_Settings
+    - TMPro.TMP_SpriteAsset
+    - TMPro.TMP_StyleSheet
+    - TMPro.TextMeshPro
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
@@ -135,9 +141,13 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10334}
     - Class: 114
+      Script: {instanceID: 10338}
+    - Class: 114
       Script: {instanceID: 10432}
     - Class: 114
       Script: {instanceID: 10862}
+    - Class: 114
+      Script: {instanceID: 10894}
     - Class: 114
       Script: {instanceID: 10922}
     - Class: 115
@@ -183,6 +193,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 48
       Script: {instanceID: 0}
+    - Class: 49
+      Script: {instanceID: 0}
     - Class: 54
       Script: {instanceID: 0}
     - Class: 65
@@ -204,6 +216,8 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 108
+      Script: {instanceID: 0}
+    - Class: 109
       Script: {instanceID: 0}
     - Class: 114
       Script: {instanceID: 9300}
@@ -250,6 +264,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9578}
     - Class: 114
+      Script: {instanceID: 9886}
+    - Class: 114
       Script: {instanceID: 9908}
     - Class: 114
       Script: {instanceID: 9994}
@@ -270,6 +286,10 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10334}
     - Class: 114
+      Script: {instanceID: 10338}
+    - Class: 114
+      Script: {instanceID: 10350}
+    - Class: 114
       Script: {instanceID: 10356}
     - Class: 114
       Script: {instanceID: 10432}
@@ -281,6 +301,10 @@ ScriptsOnlyBuild:
       Script: {instanceID: 10498}
     - Class: 114
       Script: {instanceID: 10776}
+    - Class: 114
+      Script: {instanceID: 10804}
+    - Class: 114
+      Script: {instanceID: 10894}
     - Class: 114
       Script: {instanceID: 10922}
     - Class: 114
@@ -470,7 +494,7 @@ ScriptsOnlyBuild:
     className: DemoHubManager
   - hash:
       serializedVersion: 2
-      Hash: 6c84f7cfd8a9d096afda45b26ae49b13
+      Hash: f00f9b64ca37b81249c88f5431b3d712
     assemblyName: Assembly-CSharp.dll
     namespaceName: Com.Kawaiisun.SimpleHostile
     className: Player
@@ -1860,6 +1884,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Com.Kawaiisun.SimpleHostile
+    className: Data
   platform: 19
   scenePathNames:
   - Assets/Scenes/Menu.unity

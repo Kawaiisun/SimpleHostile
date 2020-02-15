@@ -7,11 +7,26 @@ using UnityEngine.UI;
 
 namespace Com.Kawaiisun.SimpleHostile
 {
+    [System.Serializable]
     public class ProfileData
     {
         public string username;
         public int level;
         public int xp;
+
+        public ProfileData()
+        {
+            this.username = "";
+            this.level = 1;
+            this.xp = 0;
+        }
+
+        public ProfileData(string u, int l, int x)
+        {
+            this.username = u;
+            this.level = l;
+            this.xp = x;
+        }
     }
 
     public class Launcher : MonoBehaviourPunCallbacks
@@ -29,6 +44,13 @@ namespace Com.Kawaiisun.SimpleHostile
         public void Awake()
         {
             PhotonNetwork.AutomaticallySyncScene = true;
+
+            myProfile = Data.LoadProfile();
+            if (!string.IsNullOrEmpty(myProfile.username))
+            {
+                usernameField.text = myProfile.username;
+            }
+
             Connect();
         }
 
@@ -137,6 +159,7 @@ namespace Com.Kawaiisun.SimpleHostile
 
             if(PhotonNetwork.CurrentRoom.PlayerCount == 1)
             {
+                Data.SaveProfile(myProfile);
                 PhotonNetwork.LoadLevel(1);
             }
         }
