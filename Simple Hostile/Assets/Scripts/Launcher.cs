@@ -32,10 +32,14 @@ namespace Com.Kawaiisun.SimpleHostile
     public class Launcher : MonoBehaviourPunCallbacks
     {
         public InputField usernameField;
+        public InputField roomnameField; 
+        public Slider maxPlayersSlider; 
+        public Text maxPlayersValue; 
         public static ProfileData myProfile = new ProfileData();
 
         public GameObject tabMain;
         public GameObject tabRooms;
+        public GameObject tabCreate; 
 
         public GameObject buttonRoom;
 
@@ -91,15 +95,30 @@ namespace Com.Kawaiisun.SimpleHostile
         public void Create ()
         {
             RoomOptions options = new RoomOptions(); 
-            options.MaxPlayers = 8;
+            options.MaxPlayers = (byte) maxPlayersSlider.value; 
 
-            PhotonNetwork.CreateRoom("", options);
+            ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable(); 
+            properties.Add("map", 0); 
+            options.CustomRoomProperties = properties; 
+
+            PhotonNetwork.CreateRoom(roomnameField.text, options); 
+        }
+
+        public void ChangeMap () 
+        {
+
+        }
+
+        public void ChangeMaxPlayersSlider (float t_value) 
+        {
+            maxPlayersValue.text = Mathf.RoundToInt(t_value).ToString();
         }
 
         public void TabCloseAll()
         {
             tabMain.SetActive(false);
             tabRooms.SetActive(false);
+            tabCreate.SetActive(false); 
         }
 
         public void TabOpenMain ()
@@ -114,10 +133,28 @@ namespace Com.Kawaiisun.SimpleHostile
             tabRooms.SetActive(true);
         }
 
+        public void TabOpenCreate () 
+        {
+            TabCloseAll();
+            tabCreate.SetActive(true);
+        }
+
         private void ClearRoomList ()
         {
             Transform content = tabRooms.transform.Find("Scroll View/Viewport/Content");
             foreach (Transform a in content) Destroy(a.gameObject);
+        }
+
+        private void VerifyUsername ()
+        {
+            if (string.IsNullOrEmpty(usernameField.text))
+            {
+                myProfile.username = "RANDOM_USER_" + Random.Range(100, 1000);
+            }
+            else
+            {
+                myProfile.username = usernameField.text;
+            }
         }
 
         public override void OnRoomListUpdate(List<RoomInfo> p_list)
@@ -143,19 +180,15 @@ namespace Com.Kawaiisun.SimpleHostile
         public void JoinRoom (Transform p_button)
         {
             string t_roomName = p_button.Find("Name").GetComponent<Text>().text;
+
+            VerifyUsername();
+
             PhotonNetwork.JoinRoom(t_roomName);
         }
 
         public void StartGame ()
         {
-            if (string.IsNullOrEmpty(usernameField.text))
-            {
-                myProfile.username = "RANDOM_USER_" + Random.Range(100, 1000);
-            }
-            else
-            {
-                myProfile.username = usernameField.text;
-            }
+            VerifyUsername();
 
             if(PhotonNetwork.CurrentRoom.PlayerCount == 1)
             {

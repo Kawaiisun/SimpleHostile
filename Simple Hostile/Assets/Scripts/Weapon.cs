@@ -226,7 +226,13 @@ namespace Com.Kawaiisun.SimpleHostile
                         if (t_hit.collider.gameObject.layer == 11)
                         {
                             //give damage
-                            t_hit.collider.transform.root.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, loadout[currentIndex].damage);
+                            t_hit.collider.transform.root.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, loadout[currentIndex].damage, PhotonNetwork.LocalPlayer.ActorNumber);
+
+                            //check for kill
+                            //if (t_hit.collider.transform.root.gameObject.GetComponent<Player>().CheckKill(loadout[currentIndex].damage))
+                            //{
+                            //    manager.ChangeStat_S(PhotonNetwork.LocalPlayer.ActorNumber, 0, 1);
+                            //}
 
                             //show hitmarker
                             hitmarkerImage.color = Color.white;
@@ -265,9 +271,9 @@ namespace Com.Kawaiisun.SimpleHostile
         }
 
         [PunRPC]
-        private void TakeDamage (int p_damage)
+        private void TakeDamage (int p_damage, int p_actor)
         {
-            GetComponent<Player>().TakeDamage(p_damage);
+            GetComponent<Player>().TakeDamage(p_damage, p_actor);
         }
 
         #endregion
