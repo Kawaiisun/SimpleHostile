@@ -25,9 +25,22 @@ namespace Com.Kawaiisun.SimpleHostile
         }
     }
 
-    public class Manager : MonoBehaviour, IOnEventCallback
+    public enum GameState
+    {
+        Waiting = 0,
+        Starting = 1,
+        Playing = 2,
+        Ending = 3
+    }
+
+    public class Manager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         #region Fields
+
+        public int mainmenu = 0;
+        public int killcount = 3;
+
+        public GameObject mapcam;
 
         public string player_prefab_string;
         public GameObject player_prefab;
@@ -39,6 +52,9 @@ namespace Com.Kawaiisun.SimpleHostile
         private Text ui_mykills;
         private Text ui_mydeaths;
         private Transform ui_leaderboard;
+        private Transform ui_endgame;
+
+        private GameState state = GameState.Waiting;
 
         #endregion
 
@@ -57,6 +73,8 @@ namespace Com.Kawaiisun.SimpleHostile
 
         private void Start()
         {
+            mapcam.SetActive(false);
+
             ValidateConnection();
             InitializeUI();
             NewPlayer_S(Launcher.myProfile);
@@ -65,6 +83,11 @@ namespace Com.Kawaiisun.SimpleHostile
 
         private void Update()
         {
+            if (state == GameState.Ending)
+            {
+                return;
+            }
+
             if (Input.GetKeyDown(KeyCode.Tab))
             {
                 if (ui_leaderboard.gameObject.activeSelf) ui_leaderboard.gameObject.SetActive(false);
@@ -108,6 +131,12 @@ namespace Com.Kawaiisun.SimpleHostile
             }
         }
 
+        public override void OnLeftRoom ()
+        {
+            base.OnLeftRoom();
+            SceneManager.LoadScene(mainmenu);
+        }
+
         #endregion
 
         #region Methods
@@ -133,6 +162,7 @@ namespace Com.Kawaiisun.SimpleHostile
             ui_mykills = GameObject.Find("HUD/Stats/Kills/Text").GetComponent<Text>();
             ui_mydeaths = GameObject.Find("HUD/Stats/Deaths/Text").GetComponent<Text>();
             ui_leaderboard = GameObject.Find("HUD").transform.Find("Leaderboard").transform;
+            ui_endgame = GameObject.Find("Canvas").transform.Find("End Game").transform;
 
             RefreshMyStats();
         }
@@ -223,7 +253,67 @@ namespace Com.Kawaiisun.SimpleHostile
         private void ValidateConnection ()
         {
             if (PhotonNetwork.IsConnected) return;
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(mainmenu);
+        }
+
+        private void StateCheck ()
+        {
+            if (state == GameState.Ending)
+            {
+                EndGame();
+            }
+        }
+
+        private void ScoreCheck ()
+        {
+            // define temporary variables
+            bool detectwin = false;
+
+            // check to see if any player has met the win conditions
+            foreach (PlayerInfo a in playerInfo)
+            {
+                // free for all
+                if(a.kills >= killcount)
+                {
+                    detectwin = true;
+                    break;
+                }
+            }
+
+            // did we find a winner?
+            if (detectwin)
+            {
+                // are we the master client? is the game still going?
+                if (PhotonNetwork.IsMasterClient && state != GameState.Ending)
+                {
+                    // if so, tell the other players that a winner has been detected
+                    UpdatePlayers_S((int)GameState.Ending, playerInfo);
+                }
+            }
+        }
+
+        private void EndGame()
+        {
+            // set game state to ending
+            state = GameState.Ending;
+
+            // disable room
+            if (PhotonNetwork.IsMasterClient) 
+            { 
+                PhotonNetwork.DestroyAll();
+                PhotonNetwork.CurrentRoom.IsVisible = false;
+                PhotonNetwork.CurrentRoom.IsOpen = false;
+            }
+
+            // activate map camera
+            mapcam.SetActive(true);
+
+            // show end game ui
+            ui_endgame.gameObject.SetActive(true);
+            Leaderboard(ui_endgame.Find("Leaderboard"));
+
+            // wait X seconds and then return to main menu
+            StartCoroutine(End(6f));
         }
 
         #endregion
@@ -263,13 +353,14 @@ namespace Com.Kawaiisun.SimpleHostile
 
             playerInfo.Add(p);
 
-            UpdatePlayers_S(playerInfo);
+            UpdatePlayers_S((int)state, playerInfo);
         }
 
-        public void UpdatePlayers_S (List<PlayerInfo> info)
+        public void UpdatePlayers_S (int state, List<PlayerInfo> info)
         {
-            object[] package = new object[info.Count];
+            object[] package = new object[info.Count + 1];
 
+            package[0] = state;
             for (int i = 0; i < info.Count; i++)
             {
                 object[] piece = new object[6];
@@ -281,7 +372,7 @@ namespace Com.Kawaiisun.SimpleHostile
                 piece[4] = info[i].kills;
                 piece[5] = info[i].deaths;
 
-                package[i] = piece;
+                package[i + 1] = piece;
             }
 
             PhotonNetwork.RaiseEvent (
@@ -293,9 +384,10 @@ namespace Com.Kawaiisun.SimpleHostile
         }
         public void UpdatePlayers_R (object[] data)
         {
+            state = (GameState)data[0];
             playerInfo = new List<PlayerInfo>();
 
-            for (int i = 0; i < data.Length; i++)
+            for (int i = 1; i < data.Length; i++)
             {
                 object[] extract = (object[]) data[i];
 
@@ -312,8 +404,10 @@ namespace Com.Kawaiisun.SimpleHostile
 
                 playerInfo.Add(p);
 
-                if (PhotonNetwork.LocalPlayer.ActorNumber == p.actor) myind = i;
+                if (PhotonNetwork.LocalPlayer.ActorNumber == p.actor) myind = i - 1;
             }
+
+            StateCheck();
         }
 
         public void ChangeStat_S (int actor, byte stat, byte amt)
@@ -353,9 +447,24 @@ namespace Com.Kawaiisun.SimpleHostile
                     if(i == myind) RefreshMyStats();
                     if (ui_leaderboard.gameObject.activeSelf) Leaderboard(ui_leaderboard);
 
-                    return;
+                    break;
                 }
             }
+
+            ScoreCheck();
+        }
+
+        #endregion
+
+        #region Coroutines
+
+        private IEnumerator End (float p_wait)
+        {
+            yield return new WaitForSeconds(p_wait);
+
+            // disconnect
+            PhotonNetwork.AutomaticallySyncScene = false;
+            PhotonNetwork.LeaveRoom();
         }
 
         #endregion

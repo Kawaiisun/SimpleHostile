@@ -1726,7 +1726,7 @@ ScriptsOnlyBuild:
     className: CurrentRoomMasterClientIdProperty
   - hash:
       serializedVersion: 2
-      Hash: 80bbe5f40aa6e22a126e604b5da20dfc
+      Hash: 998ee77fe6dc8d2de7f7fcb38296e964
     assemblyName: Assembly-CSharp.dll
     namespaceName: Com.Kawaiisun.SimpleHostile
     className: Manager

@@ -1415,7 +1415,7 @@ MonoBehaviour:
   jetWait: 0.5
   jetRecovery: 2
   lengthOfSlide: 0.75
-  max_health: 1000
+  max_health: 350
   max_fuel: 2
   normalCam: {fileID: 9087296974207401432}
   weaponCam: {fileID: 1260878104692958158}
