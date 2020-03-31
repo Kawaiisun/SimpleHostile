@@ -39,6 +39,7 @@ namespace Com.Kawaiisun.SimpleHostile
 
         public int mainmenu = 0;
         public int killcount = 3;
+        public bool perpetual = false;
 
         public GameObject mapcam;
 
@@ -64,7 +65,8 @@ namespace Com.Kawaiisun.SimpleHostile
         {
             NewPlayer,
             UpdatePlayers,
-            ChangeStat
+            ChangeStat,
+            NewMatch
         }
 
         #endregion
@@ -127,6 +129,10 @@ namespace Com.Kawaiisun.SimpleHostile
 
                 case EventCodes.ChangeStat:
                     ChangeStat_R(o);
+                    break;
+
+                case EventCodes.NewMatch:
+                    NewMatch_R();
                     break;
             }
         }
@@ -298,11 +304,15 @@ namespace Com.Kawaiisun.SimpleHostile
             state = GameState.Ending;
 
             // disable room
-            if (PhotonNetwork.IsMasterClient) 
-            { 
+            if (PhotonNetwork.IsMasterClient)
+            {
                 PhotonNetwork.DestroyAll();
-                PhotonNetwork.CurrentRoom.IsVisible = false;
-                PhotonNetwork.CurrentRoom.IsOpen = false;
+
+                if (!perpetual)
+                {
+                    PhotonNetwork.CurrentRoom.IsVisible = false;
+                    PhotonNetwork.CurrentRoom.IsOpen = false;
+                }
             }
 
             // activate map camera
@@ -454,6 +464,40 @@ namespace Com.Kawaiisun.SimpleHostile
             ScoreCheck();
         }
 
+        public void NewMatch_S ()
+        {
+            PhotonNetwork.RaiseEvent(
+                (byte)EventCodes.NewMatch,
+                null,
+                new RaiseEventOptions { Receivers = ReceiverGroup.All },
+                new SendOptions { Reliability = true }
+            );
+        }
+        public void NewMatch_R ()
+        {
+            // set game state to waiting
+            state = GameState.Waiting;
+
+            // deactivate map camera
+            mapcam.SetActive(false);
+
+            // hide end game ui
+            ui_endgame.gameObject.SetActive(false);
+
+            // reset scores
+            foreach (PlayerInfo p in playerInfo)
+            {
+                p.kills = 0;
+                p.deaths = 0;
+            }
+
+            // reset ui
+            RefreshMyStats();
+
+            // spawn
+            Spawn();
+        }
+
         #endregion
 
         #region Coroutines
@@ -462,9 +506,20 @@ namespace Com.Kawaiisun.SimpleHostile
         {
             yield return new WaitForSeconds(p_wait);
 
-            // disconnect
-            PhotonNetwork.AutomaticallySyncScene = false;
-            PhotonNetwork.LeaveRoom();
+            if(perpetual)
+            {
+                // new match
+                if(PhotonNetwork.IsMasterClient)
+                {
+                    NewMatch_S();
+                }
+            }
+            else
+            {
+                // disconnect
+                PhotonNetwork.AutomaticallySyncScene = false;
+                PhotonNetwork.LeaveRoom();
+            }
         }
 
         #endregion

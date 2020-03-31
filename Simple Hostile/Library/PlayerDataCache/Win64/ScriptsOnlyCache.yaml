@@ -23,6 +23,7 @@ ScriptsOnlyBuild:
     - Photon.Pun.Demo.SlotRacer.Utils.SplineWalker
     PhotonUnityNetworking.Editor.dll:
     - Photon.Pun.PunSceneSettings
+    - ServerSettingsInspector
     PhotonUnityNetworking.dll:
     - Photon.Pun.PhotonAnimatorView
     - Photon.Pun.PhotonRigidbodyView
@@ -1726,7 +1727,7 @@ ScriptsOnlyBuild:
     className: CurrentRoomMasterClientIdProperty
   - hash:
       serializedVersion: 2
-      Hash: 998ee77fe6dc8d2de7f7fcb38296e964
+      Hash: 27f78d47b8824998d4e07f27243ee713
     assemblyName: Assembly-CSharp.dll
     namespaceName: Com.Kawaiisun.SimpleHostile
     className: Manager

@@ -151,6 +151,7 @@ namespace Com.Kawaiisun.SimpleHostile
         void PickupWeapon(string name)
         {
             Gun newWeapon = GunLibrary.FindGun(name);
+            newWeapon.Initialize();
 
             if (loadout.Count >= 2)
             {
