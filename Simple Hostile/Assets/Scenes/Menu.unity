@@ -2444,6 +2444,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   usernameField: {fileID: 331785997}
   roomnameField: {fileID: 680761738}
+  mapValue: {fileID: 2087880087}
   maxPlayersSlider: {fileID: 1658487710}
   maxPlayersValue: {fileID: 1965660442}
   tabMain: {fileID: 1926696959}
@@ -2451,6 +2452,11 @@ MonoBehaviour:
   tabCreate: {fileID: 69669776}
   buttonRoom: {fileID: 41906257588582656, guid: cd3bbfeda493b184d97df1e7b359908a,
     type: 3}
+  maps:
+  - name: Battlefield
+    scene: 1
+  - name: Chumpland
+    scene: 2
 --- !u!4 &699750014
 Transform:
   m_ObjectHideFlags: 0
@@ -5723,6 +5729,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 554931793}
+    - target: {fileID: 1538963967267305191, guid: cd3bbfeda493b184d97df1e7b359908a,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.0000076293945
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd3bbfeda493b184d97df1e7b359908a, type: 3}
 --- !u!224 &41906257453177598 stripped

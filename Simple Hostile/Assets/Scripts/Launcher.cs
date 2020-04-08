@@ -29,10 +29,18 @@ namespace Com.Kawaiisun.SimpleHostile
         }
     }
 
+    [System.Serializable]
+    public class MapData
+    {
+        public string name;
+        public int scene;
+    }
+
     public class Launcher : MonoBehaviourPunCallbacks
     {
         public InputField usernameField;
-        public InputField roomnameField; 
+        public InputField roomnameField;
+        public Text mapValue;
         public Slider maxPlayersSlider; 
         public Text maxPlayersValue; 
         public static ProfileData myProfile = new ProfileData();
@@ -42,6 +50,9 @@ namespace Com.Kawaiisun.SimpleHostile
         public GameObject tabCreate; 
 
         public GameObject buttonRoom;
+
+        public MapData[] maps;
+        private int currentmap = 0;
 
         private List<RoomInfo> roomList;
 
@@ -95,18 +106,22 @@ namespace Com.Kawaiisun.SimpleHostile
         public void Create ()
         {
             RoomOptions options = new RoomOptions(); 
-            options.MaxPlayers = (byte) maxPlayersSlider.value; 
+            options.MaxPlayers = (byte) maxPlayersSlider.value;
+
+            options.CustomRoomPropertiesForLobby = new string[] { "map" };
 
             ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable(); 
-            properties.Add("map", 0); 
+            properties.Add("map", currentmap);
             options.CustomRoomProperties = properties; 
 
             PhotonNetwork.CreateRoom(roomnameField.text, options); 
         }
 
-        public void ChangeMap () 
+        public void ChangeMap ()
         {
-
+            currentmap++;
+            if (currentmap >= maps.Length) currentmap = 0;
+            mapValue.text = "MAP: " + maps[currentmap].name.ToUpper();
         }
 
         public void ChangeMaxPlayersSlider (float t_value) 
@@ -133,10 +148,18 @@ namespace Com.Kawaiisun.SimpleHostile
             tabRooms.SetActive(true);
         }
 
-        public void TabOpenCreate () 
+        public void TabOpenCreate ()
         {
             TabCloseAll();
             tabCreate.SetActive(true);
+
+            roomnameField.text = "";
+
+            currentmap = 0;
+            mapValue.text = "MAP: " + maps[currentmap].name.ToUpper();
+
+            maxPlayersSlider.value = maxPlayersSlider.maxValue;
+            maxPlayersValue.text = Mathf.RoundToInt(maxPlayersSlider.value).ToString();
         }
 
         private void ClearRoomList ()
@@ -171,6 +194,11 @@ namespace Com.Kawaiisun.SimpleHostile
                 newRoomButton.transform.Find("Name").GetComponent<Text>().text = a.Name;
                 newRoomButton.transform.Find("Players").GetComponent<Text>().text = a.PlayerCount + " / " + a.MaxPlayers;
 
+                if (a.CustomProperties.ContainsKey("map"))
+                    newRoomButton.transform.Find("Map/Name").GetComponent<Text>().text = maps[(int)a.CustomProperties["map"]].name;
+                else
+                    newRoomButton.transform.Find("Map/Name").GetComponent<Text>().text = "-----";
+
                 newRoomButton.GetComponent<Button>().onClick.AddListener(delegate { JoinRoom(newRoomButton.transform); });
             }
 
@@ -193,7 +221,7 @@ namespace Com.Kawaiisun.SimpleHostile
             if(PhotonNetwork.CurrentRoom.PlayerCount == 1)
             {
                 Data.SaveProfile(myProfile);
-                PhotonNetwork.LoadLevel(1);
+                PhotonNetwork.LoadLevel(maps[currentmap].scene);
             }
         }
     }
