@@ -31,6 +31,7 @@ namespace Com.Kawaiisun.SimpleHostile
         public LayerMask ground;
 
         [HideInInspector] public ProfileData playerProfile;
+        [HideInInspector] public bool awayTeam;
         public TextMeshPro playerUsername;
 
         public float slideAmount;
@@ -39,10 +40,13 @@ namespace Com.Kawaiisun.SimpleHostile
         public GameObject crouchingCollider;
         public GameObject mesh;
 
+        public Renderer[] teamIndicators;
+
         private Transform ui_healthbar;
         private Transform ui_fuelbar;
         private Text ui_ammo;
         private Text ui_username;
+        private Text ui_team;
 
         private Rigidbody rig;
 
@@ -132,14 +136,40 @@ namespace Com.Kawaiisun.SimpleHostile
                 ui_fuelbar = GameObject.Find("HUD/Fuel/Bar").transform;
                 ui_ammo = GameObject.Find("HUD/Ammo/Text").GetComponent<Text>();
                 ui_username = GameObject.Find("HUD/Username/Text").GetComponent<Text>();
+                ui_team = GameObject.Find("HUD/Team/Text").GetComponent<Text>();
 
                 RefreshHealthBar();
                 ui_username.text = Launcher.myProfile.username;
 
                 photonView.RPC("SyncProfile", RpcTarget.All, Launcher.myProfile.username, Launcher.myProfile.level, Launcher.myProfile.xp);
 
+                if (GameSettings.GameMode == GameMode.TDM)
+                {
+                    photonView.RPC("SyncTeam", RpcTarget.All, GameSettings.IsAwayTeam);
+
+                    if (GameSettings.IsAwayTeam)
+                    {
+                        ui_team.text = "red team";
+                        ui_team.color = Color.red;
+                    }
+                    else
+                    {
+                        ui_team.text = "blue team";
+                        ui_team.color = Color.blue;
+                    }
+                }
+                else
+                {
+                    ui_team.gameObject.SetActive(false);
+                }
+
                 anim = GetComponent<Animator>();
             }
+        }
+
+        private void ColorTeamIndicators (Color p_color)
+        {
+            foreach (Renderer renderer in teamIndicators) renderer.material.color = p_color;
         }
 
         private void ChangeLayerRecursively(Transform p_trans, int p_layer)
@@ -468,11 +498,38 @@ namespace Com.Kawaiisun.SimpleHostile
             ui_healthbar.localScale = Vector3.Lerp(ui_healthbar.localScale, new Vector3(t_health_ratio, 1, 1), Time.deltaTime * 8f);
         }
 
+        public void TrySync ()
+        {
+            if (!photonView.IsMine) return;
+
+            photonView.RPC("SyncProfile", RpcTarget.All, Launcher.myProfile.username, Launcher.myProfile.level, Launcher.myProfile.xp);
+
+            if (GameSettings.GameMode == GameMode.TDM)
+            {
+                photonView.RPC("SyncTeam", RpcTarget.All, GameSettings.IsAwayTeam);
+            }
+        }
+
         [PunRPC]
         private void SyncProfile(string p_username, int p_level, int p_xp)
         {
             playerProfile = new ProfileData(p_username, p_level, p_xp);
             playerUsername.text = playerProfile.username;
+        }
+
+        [PunRPC]
+        private void SyncTeam(bool p_awayTeam)
+        {
+            awayTeam = p_awayTeam;
+
+            if (awayTeam)
+            {
+                ColorTeamIndicators(Color.red);
+            }
+            else
+            {
+                ColorTeamIndicators(Color.blue);
+            }
         }
 
         [PunRPC]

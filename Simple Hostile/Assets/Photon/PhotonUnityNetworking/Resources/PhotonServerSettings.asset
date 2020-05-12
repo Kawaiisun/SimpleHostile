@@ -40,5 +40,6 @@ MonoBehaviour:
   - Disable
   - PickupWeapon
   - SyncProfile
+  - SyncTeam
   DisableAutoOpenWizard: 1
   ShowSettings: 1

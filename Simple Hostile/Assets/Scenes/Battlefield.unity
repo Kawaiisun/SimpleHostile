@@ -5587,6 +5587,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainmenu: 0
   killcount: 1
+  matchLength: 20
   perpetual: 1
   mapcam: {fileID: 963194225}
   player_prefab_string: Player

@@ -226,19 +226,37 @@ namespace Com.Kawaiisun.SimpleHostile
                         //shooting other player on network
                         if (t_hit.collider.gameObject.layer == 11)
                         {
-                            //give damage
-                            t_hit.collider.transform.root.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, loadout[currentIndex].damage, PhotonNetwork.LocalPlayer.ActorNumber);
+                            bool applyDamage = false;
 
-                            //check for kill
-                            //if (t_hit.collider.transform.root.gameObject.GetComponent<Player>().CheckKill(loadout[currentIndex].damage))
-                            //{
-                            //    manager.ChangeStat_S(PhotonNetwork.LocalPlayer.ActorNumber, 0, 1);
-                            //}
+                            if (GameSettings.GameMode == GameMode.FFA)
+                            {
+                                applyDamage = true;
+                            }
 
-                            //show hitmarker
-                            hitmarkerImage.color = Color.white;
-                            sfx.PlayOneShot(hitmarkerSound);
-                            hitmarkerWait = 1f;
+                            if (GameSettings.GameMode == GameMode.TDM)
+                            {
+                                if (t_hit.collider.transform.root.gameObject.GetComponent<Player>().awayTeam != GameSettings.IsAwayTeam)
+                                {
+                                    applyDamage = true;
+                                }
+                            }
+
+                            if (applyDamage)
+                            {
+                                //give damage
+                                t_hit.collider.transform.root.gameObject.GetPhotonView().RPC("TakeDamage", RpcTarget.All, loadout[currentIndex].damage, PhotonNetwork.LocalPlayer.ActorNumber);
+
+                                //check for kill
+                                //if (t_hit.collider.transform.root.gameObject.GetComponent<Player>().CheckKill(loadout[currentIndex].damage))
+                                //{
+                                //    manager.ChangeStat_S(PhotonNetwork.LocalPlayer.ActorNumber, 0, 1);
+                                //}
+
+                                //show hitmarker
+                                hitmarkerImage.color = Color.white;
+                                sfx.PlayOneShot(hitmarkerSound);
+                                hitmarkerWait = 1f;
+                            }
                         }
 
 

@@ -15,13 +15,15 @@ namespace Com.Kawaiisun.SimpleHostile
         public int actor;
         public short kills;
         public short deaths;
+        public bool awayTeam;
 
-        public PlayerInfo (ProfileData p, int a, short k, short d)
+        public PlayerInfo (ProfileData p, int a, short k, short d, bool t)
         {
             this.profile = p;
             this.actor = a;
             this.kills = k;
             this.deaths = d;
+            this.awayTeam = t;
         }
     }
 
@@ -39,6 +41,7 @@ namespace Com.Kawaiisun.SimpleHostile
 
         public int mainmenu = 0;
         public int killcount = 3;
+        public int matchLength = 180;
         public bool perpetual = false;
 
         public GameObject mapcam;
@@ -50,10 +53,16 @@ namespace Com.Kawaiisun.SimpleHostile
         public List<PlayerInfo> playerInfo = new List<PlayerInfo>();
         public int myind;
 
+        private bool playerAdded;
+
         private Text ui_mykills;
         private Text ui_mydeaths;
+        private Text ui_timer;
         private Transform ui_leaderboard;
         private Transform ui_endgame;
+
+        private int currentMatchTime;
+        private Coroutine timerCoroutine;
 
         private GameState state = GameState.Waiting;
 
@@ -66,7 +75,8 @@ namespace Com.Kawaiisun.SimpleHostile
             NewPlayer,
             UpdatePlayers,
             ChangeStat,
-            NewMatch
+            NewMatch,
+            RefreshTimer
         }
 
         #endregion
@@ -79,8 +89,14 @@ namespace Com.Kawaiisun.SimpleHostile
 
             ValidateConnection();
             InitializeUI();
+            InitializeTimer();
             NewPlayer_S(Launcher.myProfile);
-            Spawn();
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                playerAdded = true;
+                Spawn();
+            }
         }
 
         private void Update()
@@ -134,6 +150,10 @@ namespace Com.Kawaiisun.SimpleHostile
                 case EventCodes.NewMatch:
                     NewMatch_R();
                     break;
+
+                case EventCodes.RefreshTimer:
+                    RefreshTimer_R(o);
+                    break;
             }
         }
 
@@ -158,7 +178,6 @@ namespace Com.Kawaiisun.SimpleHostile
 
             else
             {
-                Debug.Log("WORKING");
                 GameObject newPlayer = Instantiate(player_prefab, t_spawn.position, t_spawn.rotation) as GameObject;
             }
         }
@@ -167,6 +186,7 @@ namespace Com.Kawaiisun.SimpleHostile
         {
             ui_mykills = GameObject.Find("HUD/Stats/Kills/Text").GetComponent<Text>();
             ui_mydeaths = GameObject.Find("HUD/Stats/Deaths/Text").GetComponent<Text>();
+            ui_timer = GameObject.Find("HUD/Timer/Text").GetComponent<Text>();
             ui_leaderboard = GameObject.Find("HUD").transform.Find("Leaderboard").transform;
             ui_endgame = GameObject.Find("Canvas").transform.Find("End Game").transform;
 
@@ -196,8 +216,8 @@ namespace Com.Kawaiisun.SimpleHostile
             }
 
             // set details
-            p_lb.Find("Header/Mode").GetComponent<Text>().text = "FREE FOR ALL";
-            p_lb.Find("Header/Map").GetComponent<Text>().text = "Battlefield";
+            p_lb.Find("Header/Mode").GetComponent<Text>().text = System.Enum.GetName(typeof(GameMode), GameSettings.GameMode);
+            p_lb.Find("Header/Map").GetComponent<Text>().text = SceneManager.GetActiveScene().name;
 
             // cache prefab
             GameObject playercard = p_lb.GetChild(1).gameObject;
@@ -298,10 +318,33 @@ namespace Com.Kawaiisun.SimpleHostile
             }
         }
 
+        private void InitializeTimer ()
+        {
+            currentMatchTime = matchLength;
+            RefreshTimerUI();
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                timerCoroutine = StartCoroutine(Timer());
+            }
+        }
+
+        private void RefreshTimerUI()
+        {
+            string minutes = (currentMatchTime / 60).ToString("00");
+            string seconds = (currentMatchTime % 60).ToString("00");
+            ui_timer.text = $"{minutes}:{seconds}";
+        }
+
         private void EndGame()
         {
             // set game state to ending
             state = GameState.Ending;
+
+            // set timer to 0
+            if (timerCoroutine != null) StopCoroutine(timerCoroutine);
+            currentMatchTime = 0;
+            RefreshTimerUI();
 
             // disable room
             if (PhotonNetwork.IsMasterClient)
@@ -326,13 +369,18 @@ namespace Com.Kawaiisun.SimpleHostile
             StartCoroutine(End(6f));
         }
 
+        private bool CalculateTeam ()
+        {
+            return PhotonNetwork.CurrentRoom.PlayerCount % 2 == 0;
+        }
+
         #endregion
 
         #region Events
 
         public void NewPlayer_S (ProfileData p)
         {
-            object[] package = new object[6];
+            object[] package = new object[7];
 
             package[0] = p.username;
             package[1] = p.level;
@@ -340,6 +388,7 @@ namespace Com.Kawaiisun.SimpleHostile
             package[3] = PhotonNetwork.LocalPlayer.ActorNumber;
             package[4] = (short) 0;
             package[5] = (short) 0;
+            package[6] = CalculateTeam();
 
             PhotonNetwork.RaiseEvent(
                 (byte)EventCodes.NewPlayer,
@@ -358,10 +407,17 @@ namespace Com.Kawaiisun.SimpleHostile
                 ),
                 (int) data[3],
                 (short) data[4],
-                (short) data[5]
+                (short) data[5],
+                (bool) data[6]
             );
 
             playerInfo.Add(p);
+
+            //resync our local player information with the new player
+            foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag("Player")) 
+            {
+                gameObject.GetComponent<Player>().TrySync();
+            }
 
             UpdatePlayers_S((int)state, playerInfo);
         }
@@ -373,7 +429,7 @@ namespace Com.Kawaiisun.SimpleHostile
             package[0] = state;
             for (int i = 0; i < info.Count; i++)
             {
-                object[] piece = new object[6];
+                object[] piece = new object[7];
 
                 piece[0] = info[i].profile.username;
                 piece[1] = info[i].profile.level;
@@ -381,6 +437,7 @@ namespace Com.Kawaiisun.SimpleHostile
                 piece[3] = info[i].actor;
                 piece[4] = info[i].kills;
                 piece[5] = info[i].deaths;
+                piece[6] = info[i].awayTeam;
 
                 package[i + 1] = piece;
             }
@@ -395,6 +452,17 @@ namespace Com.Kawaiisun.SimpleHostile
         public void UpdatePlayers_R (object[] data)
         {
             state = (GameState)data[0];
+
+            //check if there is a new player
+            if (playerInfo.Count < data.Length - 1)
+            {
+                foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag("Player"))
+                {
+                    //if so, resync our local player information
+                    gameObject.GetComponent<Player>().TrySync();
+                }
+            }
+
             playerInfo = new List<PlayerInfo>();
 
             for (int i = 1; i < data.Length; i++)
@@ -409,12 +477,24 @@ namespace Com.Kawaiisun.SimpleHostile
                     ),
                     (int) extract[3],
                     (short) extract[4],
-                    (short) extract[5]
+                    (short) extract[5],
+                    (bool) extract[6]
                 );
 
                 playerInfo.Add(p);
 
-                if (PhotonNetwork.LocalPlayer.ActorNumber == p.actor) myind = i - 1;
+                if (PhotonNetwork.LocalPlayer.ActorNumber == p.actor)
+                {
+                    myind = i - 1;
+
+                    //if we have been waiting to be added to the game then spawn us in
+                    if (!playerAdded)
+                    {
+                        playerAdded = true;
+                        GameSettings.IsAwayTeam = p.awayTeam;
+                        Spawn();
+                    }
+                }
             }
 
             StateCheck();
@@ -494,13 +574,51 @@ namespace Com.Kawaiisun.SimpleHostile
             // reset ui
             RefreshMyStats();
 
+            // reinitialize time
+            InitializeTimer();
+
             // spawn
             Spawn();
+        }
+
+        public void RefreshTimer_S()
+        {
+            object[] package = new object[] { currentMatchTime };
+
+            PhotonNetwork.RaiseEvent(
+                (byte)EventCodes.RefreshTimer,
+                package,
+                new RaiseEventOptions { Receivers = ReceiverGroup.All },
+                new SendOptions { Reliability = true }
+            );
+        }
+        public void RefreshTimer_R(object[] data)
+        {
+            currentMatchTime = (int)data[0];
+            RefreshTimerUI();
         }
 
         #endregion
 
         #region Coroutines
+
+        private IEnumerator Timer ()
+        {
+            yield return new WaitForSeconds(1f);
+
+            currentMatchTime -= 1;
+
+            if (currentMatchTime <= 0)
+            {
+                timerCoroutine = null;
+                UpdatePlayers_S((int)GameState.Ending, playerInfo);
+            }
+            else
+            {
+                RefreshTimer_S();
+                timerCoroutine = StartCoroutine(Timer());
+            }
+        }
 
         private IEnumerator End (float p_wait)
         {
