@@ -22,9 +22,9 @@ MonoBehaviour:
     width: 1920
     height: 947
   m_MinSize: {x: 681, y: 494}
-  m_MaxSize: {x: 14004, y: 14044}
+  m_MaxSize: {x: 14002, y: 14044}
   vertical: 0
-  controlID: 108
+  controlID: 3469
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -127,10 +127,10 @@ MonoBehaviour:
     y: 0
     width: 1379
     height: 947
-  m_MinSize: {x: 404, y: 494}
+  m_MinSize: {x: 406, y: 494}
   m_MaxSize: {x: 10002, y: 14044}
   vertical: 1
-  controlID: 109
+  controlID: 3470
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -152,10 +152,10 @@ MonoBehaviour:
     y: 0
     width: 1379
     height: 670
-  m_MinSize: {x: 404, y: 222}
-  m_MaxSize: {x: 8004, y: 4022}
+  m_MinSize: {x: 406, y: 222}
+  m_MaxSize: {x: 8006, y: 4022}
   vertical: 0
-  controlID: 110
+  controlID: 3471
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -175,8 +175,8 @@ MonoBehaviour:
     y: 0
     width: 218
     height: 670
-  m_MinSize: {x: 202, y: 222}
-  m_MaxSize: {x: 4002, y: 4022}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 6}
   m_Panes:
   - {fileID: 6}
@@ -213,7 +213,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 8efbffff
+      m_ExpandedIDs: a2a2ffffd4a2ffffb2a8ffffc4acffffcaacffff3cc7ffff50c7ffffeac8ffff8efbffff38610000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -337,9 +337,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0.052588046, y: 0.92954874, z: -0.14619751, w: 0.33436504}
   m_Size:
-    m_Target: 19.056404
+    m_Target: 18.198866
     speed: 2
-    m_Value: 19.056404
+    m_Value: 18.198866
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -571,20 +571,20 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Photon/PhotonUnityNetworking/Resources
+    - Assets/Prefabs/UI
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Photon/PhotonUnityNetworking/Resources
+  - Assets/Prefabs/UI
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\WeltonKing\Projects\1. Games\SimpleHostile\Simple Hostile
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 180}
-    m_SelectedIDs: 3a310000
-    m_LastClickedID: 12602
-    m_ExpandedIDs: 000000006c2b0000c42c0000363000006e3000002c3100007a3200008c3200006c3900006e3900007039000072390000
+    scrollPos: {x: 0, y: 34}
+    m_SelectedIDs: 4c320000
+    m_LastClickedID: 12876
+    m_ExpandedIDs: 000000006c2b0000363000006e3000002c3100007a3200008c3200002a3400006c3900006e3900007039000072390000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -612,7 +612,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000363000006e3000002c3100002a3200007a3200008c3200006c3900006e3900007039000072390000
+    m_ExpandedIDs: 000000006c2b0000363000006e3000002c3100007a3200008c3200002a3400006c3900006e3900007039000072390000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -637,9 +637,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: f22c0000
-    m_LastClickedInstanceID: 11506
-    m_HadKeyboardFocusLastEvent: 1
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: 2c0b0000b00d0000dc0d00009a5a0000b40b0000baab0100123f01006006000000000000eeca14009cb4040008a50400ea7af8ff4a9209002e160000feebffff
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -721,7 +721,7 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 66430
+  m_LastSelectedObjectID: -14604
 --- !u!114 &15
 MonoBehaviour:
   m_ObjectHideFlags: 52

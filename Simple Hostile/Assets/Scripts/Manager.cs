@@ -209,6 +209,10 @@ namespace Com.Kawaiisun.SimpleHostile
 
         private void Leaderboard (Transform p_lb)
         {
+            // specify leaderboard
+            if (GameSettings.GameMode == GameMode.FFA) p_lb = p_lb.Find("FFA");
+            if (GameSettings.GameMode == GameMode.TDM) p_lb = p_lb.Find("TDM");
+
             // clean up
             for (int i = 2; i < p_lb.childCount; i++)
             {
@@ -218,6 +222,13 @@ namespace Com.Kawaiisun.SimpleHostile
             // set details
             p_lb.Find("Header/Mode").GetComponent<Text>().text = System.Enum.GetName(typeof(GameMode), GameSettings.GameMode);
             p_lb.Find("Header/Map").GetComponent<Text>().text = SceneManager.GetActiveScene().name;
+
+            // set scores
+            if (GameSettings.GameMode == GameMode.TDM)
+            {
+                p_lb.Find("Header/Score/Home").GetComponent<Text>().text = "0";
+                p_lb.Find("Header/Score/Away").GetComponent<Text>().text = "0";
+            }
 
             // cache prefab
             GameObject playercard = p_lb.GetChild(1).gameObject;
@@ -231,6 +242,12 @@ namespace Com.Kawaiisun.SimpleHostile
             foreach (PlayerInfo a in sorted)
             {
                 GameObject newcard = Instantiate(playercard, p_lb) as GameObject;
+
+                if(GameSettings.GameMode == GameMode.TDM)
+                {
+                    newcard.transform.Find("Home").gameObject.SetActive(!a.awayTeam);
+                    newcard.transform.Find("Away").gameObject.SetActive(a.awayTeam);
+                }
 
                 if (t_alternateColors) newcard.GetComponent<Image>().color = new Color32(0, 0, 0, 180);
                 t_alternateColors = !t_alternateColors;
@@ -246,31 +263,97 @@ namespace Com.Kawaiisun.SimpleHostile
 
             // activate
             p_lb.gameObject.SetActive(true);
+            p_lb.parent.gameObject.SetActive(true);
         }
 
         private List<PlayerInfo> SortPlayers (List<PlayerInfo> p_info)
         {
             List<PlayerInfo> sorted = new List<PlayerInfo>();
 
-            while (sorted.Count < p_info.Count)
+            if (GameSettings.GameMode == GameMode.FFA)
             {
-                // set defaults
-                short highest = -1;
-                PlayerInfo selection = p_info[0];
-
-                // grab next highest player
-                foreach (PlayerInfo a in p_info)
+                while (sorted.Count < p_info.Count)
                 {
-                    if (sorted.Contains(a)) continue;
-                    if (a.kills > highest)
+                    // set defaults
+                    short highest = -1;
+                    PlayerInfo selection = p_info[0];
+
+                    // grab next highest player
+                    foreach (PlayerInfo a in p_info)
                     {
-                        selection = a;
-                        highest = a.kills;
+                        if (sorted.Contains(a)) continue;
+                        if (a.kills > highest)
+                        {
+                            selection = a;
+                            highest = a.kills;
+                        }
                     }
+
+                    // add player
+                    sorted.Add(selection);
+                }
+            }
+
+            if (GameSettings.GameMode == GameMode.TDM)
+            {
+                List<PlayerInfo> homeSorted = new List<PlayerInfo>();
+                List<PlayerInfo> awaySorted = new List<PlayerInfo>();
+
+                int homeSize = 0;
+                int awaySize = 0;
+
+                foreach (PlayerInfo p in p_info)
+                {
+                    if (p.awayTeam) awaySize++;
+                    else homeSize++;
                 }
 
-                // add player
-                sorted.Add(selection);
+                while (homeSorted.Count < homeSize)
+                {
+                    // set defaults
+                    short highest = -1;
+                    PlayerInfo selection = p_info[0];
+
+                    // grab next highest player
+                    foreach (PlayerInfo a in p_info)
+                    {
+                        if (a.awayTeam) continue;
+                        if (homeSorted.Contains(a)) continue;
+                        if (a.kills > highest)
+                        {
+                            selection = a;
+                            highest = a.kills;
+                        }
+                    }
+
+                    // add player
+                    homeSorted.Add(selection);
+                }
+
+                while (awaySorted.Count < awaySize)
+                {
+                    // set defaults
+                    short highest = -1;
+                    PlayerInfo selection = p_info[0];
+
+                    // grab next highest player
+                    foreach (PlayerInfo a in p_info)
+                    {
+                        if (!a.awayTeam) continue;
+                        if (awaySorted.Contains(a)) continue;
+                        if (a.kills > highest)
+                        {
+                            selection = a;
+                            highest = a.kills;
+                        }
+                    }
+
+                    // add player
+                    awaySorted.Add(selection);
+                }
+
+                sorted.AddRange(homeSorted);
+                sorted.AddRange(awaySorted);
             }
 
             return sorted;
